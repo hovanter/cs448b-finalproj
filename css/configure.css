@@ -1,0 +1,11 @@
+#radio label {
+  float: right;
+    display: inline
+}
+radio {
+    display: inline;
+}
+#radio input {
+  width: auto;
+  margin-left: 3em;
+}

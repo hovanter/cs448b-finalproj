@@ -55,10 +55,36 @@
       <a class="button button-primary" href="visualization.html">Next</a>
     </div>
   </div>
+
+  <div class="container">
+  <table class="u-full-width">
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>Data Type</th>
+        <th>Interactivity</th>
+      </tr>
+    </thead>
+    <tbody id="data-body">
+    </tbody>
+  </table>
+  </div>
 <!-- Fetch user data -->
 <script>
   var userData = JSON.parse(sessionStorage.data);
+  var datumObject = userData['data'][0];
+  var dataHtml = '<form action=""><input type="radio" name="data-type" value="Ordinal"> Ordinal<input type="radio" name="data-type" value="Nominal"> Nominal</form>';
+  var interactiveHtml = '<form action=""><input type="radio" name="data-type" value="Yes"> Yes<input type="radio" name="interactive" value="No"> No</form>';
+
+
+
+  for(var key in datumObject){
+    $('#data-body').append('<tr><td>' + key + '</td><td>'+ dataHtml +'</td><td>'+ interactiveHtml+'</td></tr>');
+  }
+
   // @andrei: Do stuff with user data to dynamically generate the data columns (See TODO above)
+  //assume JSON of form {data: [{cat1:val1, cat2:val2}, {cat1:val1, cat2:val2}}
+
 </script>
 </body>
 </html>
