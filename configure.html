@@ -52,7 +52,7 @@
     <div class="row">
       <br />
       <a class="button button-primary" href="index.html">Previous</a>
-      <a class="button button-primary" href="visualization.html">Next</a>
+      <a class="button button-primary" href="visualization.html" onclick="populateFilters()">Next</a>
     </div>
   </div>
 
@@ -71,19 +71,66 @@
   </div>
 <!-- Fetch user data -->
 <script>
+
+  // @andrei: Do stuff with user data to dynamically generate the data columns (See TODO above)
+  //assume JSON of form {data: [{cat1:val1, cat2:val2}, {cat1:val1, cat2:val2}}
   var userData = JSON.parse(sessionStorage.data);
   var datumObject = userData['data'][0];
-  var dataHtml = '<form action=""><input type="radio" name="data-type" value="Ordinal"> Ordinal<input type="radio" name="data-type" value="Nominal"> Nominal</form>';
-  var interactiveHtml = '<form action=""><input type="radio" name="data-type" value="Yes"> Yes<input type="radio" name="interactive" value="No"> No</form>';
-
-
+  var dataHtml = '<form action="">'+
+    '<input type="radio" name="data-type" value="Ordinal">' +
+    ' Ordinal<input type="radio" name="data-type"'+ 
+    ' value="Nominal"> Nominal</form>';
+  var interactiveHtml = '<form action="">'+
+    '<input type="radio" name="interactive" value="Interactive">'+
+    ' Yes<input type="radio" name="interactive" value="nonInteractive">'+
+    ' No</form>';
 
   for(var key in datumObject){
     $('#data-body').append('<tr><td>' + key + '</td><td>'+ dataHtml +'</td><td>'+ interactiveHtml+'</td></tr>');
   }
 
-  // @andrei: Do stuff with user data to dynamically generate the data columns (See TODO above)
-  //assume JSON of form {data: [{cat1:val1, cat2:val2}, {cat1:val1, cat2:val2}}
+
+
+  (function newNames(){
+    var tableBody = document.getElementById("data-body");
+    for (var i = 0, row; row = tableBody.rows[i]; i++) {
+      for (var j = 0, col; col = row.cells[j]; j++) {
+        if(col.childNodes[0].nodeType === 3){
+          continue;
+        }
+        else{
+          for(var k = 0; k < col.childNodes[0].children.length; k++){
+            col.childNodes[0].children[k].name = col.childNodes[0].children[k].name + i.toString();
+          }
+        } 
+      }
+    }
+  })();
+
+  var allFilters = {Ordinal:[], Nominal:[],Interactive:[],nonInteractive:[]};
+  function populateFilters(){
+    var tableBody = document.getElementById("data-body");
+    for (var i = 0, row; row = tableBody.rows[i]; i++) {
+      var catName;
+      for (var j = 0, col; col = row.cells[j]; j++) {
+        if(col.childNodes[0].nodeType === 3){
+          catName = col.childNodes[0].data; //text
+
+        } 
+        else{
+          var radioGroup = col.childNodes[0].children[0].name
+          if ($('input[name=' + radioGroup + ']:checked').length > 0) {
+            var radioValue = $('input[name=' + radioGroup + ']:checked').val();
+            allFilters[radioValue].push(catName);
+          }
+        }
+      }  
+    }
+    sessionStorage.setItem('filters', JSON.stringify(allFilters));
+  }
+    
+  
+
 
 </script>
 </body>
