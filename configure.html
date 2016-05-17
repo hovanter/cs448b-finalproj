@@ -13,8 +13,9 @@
     <div class="row">
       <br />
       <h3>2. Tell us a litle about your data:</h3>
-      <p>Tag your column types. This will help us find the best way to visualize your data.</p>
       <code>@Catherine TODO: Figure out exactly what kind of tags we want for our viz algorithm and populate this table below.</code>
+      <br />&nbsp;<br />
+      <p>Tag your column types. This will help us find the best way to visualize your data.</p>
       <table class="u-full-width">
         <thead>
           <tr>
@@ -25,25 +26,34 @@
         <tbody>
           <tr>
             <td><i>Ordinal</i></td>
-            <td>Ordinal means...</td>
+            <td>An ordinal value has some kind of ordering defined over it, which establishes a ranking over the data points. For example, age is an ordinal value that could be used to compare different people.</td>
           </tr>
           <tr>
             <td><i>Nominal</i></td>
-            <td>Nominal means...</td>
+            <td>A categorical value represents a category. It has no intrinsic ordering. For example, colors are a categorical value. Red, blue, and yellow each define a type of color, but there's no intrinsic reason why red is more important than blue, or blue more so than yellow.</td>
+          </tr>
+          <tr>
+            <td><i>Temporal</i></td>
+            <td>A temporal value is some measure of time. For example, minutes, years, and months are a temporal value.</td>
           </tr>
           <tr>
             <td><i>Interactive</i></td>
-            <td>Interactive means...</td>
+            <td>Interactive means you want us to try and find the best way for the viewer to interactive with this data attribute.</td>
           </tr>
           <tr>
             <td><i>Static</i></td>
-            <td>Static means...</td>
+            <td>Static means you want us to visualize this data attribute without interactivity.</td>
+          </tr>
+          <tr>
+            <td><i>Auto</i></td>
+            <td>Auto means you want us to figure out the best thing to do!</td>
           </tr>
         </tbody>
       </table>
     </div>
 
     <!-- Main content section -->
+    <h5>Your data columns:</h5>
     <div class="row">
       <table class="u-full-width">
         <thead>
@@ -65,7 +75,7 @@
       <a class="button button-primary" href="visualization.html">Next</a>
     </div>
   </div>
-  
+
 <!-- Fetch user data -->
 <script>
   var userData = JSON.parse(sessionStorage.data);
