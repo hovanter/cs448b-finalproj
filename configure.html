@@ -36,6 +36,10 @@
             <td>A temporal value is some measure of time. For example, minutes, years, and months are a temporal value.</td>
           </tr>
           <tr>
+            <td><i>Quantitative</i></td>
+            <td>A quantitative measure represents a numerical value</td>
+          </tr>
+          <tr>
             <td><i>Interactive</i></td>
             <td>Interactive means you want us to try and find the best way for the viewer to interactive with this data attribute.</td>
           </tr>
@@ -83,13 +87,15 @@
   var userData = JSON.parse(sessionStorage.data);
   var datumObject = userData['data'][0];
   var dataHtml = '<form action="">'+
-    '<input type="radio" name="data-type" value="Ordinal">' +
-    ' Ordinal<input type="radio" name="data-type"'+ 
-    ' value="Nominal"> Nominal</form>';
+    '<input type="radio" name="data-type" value="Ordinal">Ordinal</input>' +
+    '<input type="radio" name="data-type" value="Nominal">Nominal</input>' +
+    '<input type="radio" name="data-type" value="Temporal">Temporal</input>' +
+    '<input type="radio" name="data-type" value="Quantitative">Quantitative</input></form>';
   var interactiveHtml = '<form action="">'+
-    '<input type="radio" name="interactive" value="Interactive">'+
-    ' Yes<input type="radio" name="interactive" value="nonInteractive">'+
-    ' No</form>';
+    '<input type="radio" name="interactive" value="Interactive">Interactive</input>'+
+    '<input type="radio" name="interactive" value="Static">Static</input>'+
+    '<input type="radio" name="interactive" value="Auto">Auto</input>'+
+    '</form>';
 
 
   for(var key in datumObject){
@@ -114,7 +120,7 @@
     }
   })();
 
-  var allFilters = {Ordinal:[], Nominal:[],Interactive:[],nonInteractive:[]};
+  var allFilters = {Ordinal:[], Nominal:[], Temporal:[], Quantitative:[], Interactive:[],nonInteractive:[]};
   function populateFilters(){
     var tableBody = document.getElementById("data-body");
     for (var i = 0, row; row = tableBody.rows[i]; i++) {
@@ -134,6 +140,7 @@
       }  
     }
     sessionStorage.setItem('filters', JSON.stringify(allFilters));
+    return false;
   }
     
   
