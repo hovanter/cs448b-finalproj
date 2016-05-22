@@ -26,10 +26,11 @@ function createSpec(categoryToValues) {
 $(document).ready(function() {
   var embedSpec = {
     mode: "vega-lite",
-    spec: createSpec(null)
+    spec: createSpec(sessionStorage.categoryToValues)
   }
   vg.embed("#vis", embedSpec, function(error, result) {
     // Callback receiving the View instance and parsed Vega spec
     // result.view is the View, which resides under the '#vis' element
+    $(".vega-actions a").addClass("button");
   });
 });
