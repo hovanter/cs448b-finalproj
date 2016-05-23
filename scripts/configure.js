@@ -28,7 +28,7 @@
     }
   }
 
-  sessionStorage.setItem('categoryToValues', JSON.stringify(categoryToValue));
+  sessionStorage.categoryToValues = JSON.stringify(categoryToValue);
 
   (function newNames(){
     var tableBody = document.getElementById("data-body");
@@ -67,6 +67,6 @@ function populateFilters(){
       }
     }  
   }
-  sessionStorage.setItem('filters', JSON.stringify(allFilters));
+  sessionStorage.filters = JSON.stringify(allFilters);
 }
   
