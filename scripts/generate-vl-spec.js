@@ -1,22 +1,26 @@
 /* Creates a Vega-Lite spec given the user's category-to-values
  * mapping for the data. */
 function createSpec(categoryToValues) {
+  var csvString = sessionStorage.data;
+  var results = Papa.parse(csvString, {
+    header: true
+  });
+  // console.log(results.data)
+
   var vlSpec = {
     "data": {
-      "values": [
-        {"a": "C", "b": 2}, {"a": "C", "b": 7}, {"a": "C", "b": 4},
-        {"a": "D", "b": 1}, {"a": "D", "b": 2}, {"a": "D", "b": 6},
-        {"a": "E", "b": 8}, {"a": "E", "b": 4}, {"a": "E", "b": 7}
-      ]
+      "values": results.data
     },
     "mark": "bar",
     "encoding": {
-      "y": {"field": "a", "type": "nominal"},
-      "x": {
-        "aggregate": "average", "field": "b", "type": "quantitative",
-        "axis": {
-          "title": "Average of b"
-        }
+      // TODO: Write code to generate the correct fields and types here automatically
+      "y": {"field": "latitude", "type": "quantitative"},
+      "x": {"field": "longitude", "type": "ordinal"}
+    },
+    "config": {
+      "cell": {
+        width: 600,
+        height: 600
       }
     }
   };
@@ -26,6 +30,7 @@ function createSpec(categoryToValues) {
 $(document).ready(function() {
   var embedSpec = {
     mode: "vega-lite",
+    renderer: "svg",
     spec: createSpec(sessionStorage.categoryToValues)
   }
   vg.embed("#vis", embedSpec, function(error, result) {

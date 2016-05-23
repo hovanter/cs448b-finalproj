@@ -8,7 +8,7 @@
   <link rel="stylesheet" type="text/css" href="bower_components/nouislider/distribute/nouislider.min.css">
   <script src="bower_components/jquery/dist/jquery.min.js"></script>
   <script src="bower_components/nouislider/distribute/nouislider.min.js"></script>
-  <script src="scripts/sliders.js"></script>
+  <!-- <script src="scripts/sliders.js"></script> -->
 
   <!-- Vega-Lite and D3 -->
   <script src="bower_components/d3/d3.min.js" charset="utf-8"></script>
@@ -17,6 +17,7 @@
   <script src="bower_components/vega-embed/vega-embed.min.js" charset="utf-8"></script>
 
   <!-- Our script to generate a VL spec for the user's data -->
+  <script src="bower_components/papaparse/papaparse.min.js"></script>
   <script src="scripts/generate-vl-spec.js"></script>
 
   <title>Visualize</title>
@@ -31,7 +32,6 @@
 
     <!-- Main content section -->
     <div class="row">
-      <div><code>@ben-han TODO: Dynamically generate a viz by creating a Vega-Lite specification.</code></div>
       <div id="vis"></div>
     </div>
 
