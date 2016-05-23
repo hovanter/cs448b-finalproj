@@ -5,14 +5,14 @@
   var userData = JSON.parse(sessionStorage.data);
   var datumObject = userData['data'][0];
   var dataHtml = '<form action="">'+
-    '<input type="radio" name="data-type" value="Ordinal">Ordinal</input>' +
-    '<input type="radio" name="data-type" value="Nominal">Nominal</input>' +
-    '<input type="radio" name="data-type" value="Temporal">Temporal</input>' +
-    '<input type="radio" name="data-type" value="Quantitative">Quantitative</input></form>';
+    '<input type="radio" name="data-type" value="Ordinal"> Ordinal </input>' +
+    '<input type="radio" name="data-type" value="Nominal"> Nominal </input>' +
+    '<input type="radio" name="data-type" value="Temporal"> Temporal </input>' +
+    '<input type="radio" name="data-type" value="Quantitative"> Quantitative </input></form>';
   var interactiveHtml = '<form action="">'+
-    '<input type="radio" name="interactive" value="Interactive">Interactive</input>'+
-    '<input type="radio" name="interactive" value="Static">Static</input>'+
-    '<input type="radio" name="interactive" value="Auto">Auto</input>'+
+    '<input type="radio" name="interactive" value="Interactive"> Interactive </input>'+
+    '<input type="radio" name="interactive" value="Static"> Static </input>'+
+    '<input type="radio" name="interactive" value="Auto"> Auto </input>'+
     '</form>';
 
 

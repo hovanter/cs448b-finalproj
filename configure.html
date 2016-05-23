@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <link rel="stylesheet" type="text/css" href="css/skeleton/normalize.css">
   <link rel="stylesheet" type="text/css" href="css/skeleton/skeleton.css">
+  <link rel="stylesheet" type="text/css" href="css/configure.css">
   <script src="bower_components/jquery/dist/jquery.min.js"></script>
   <script src="scripts/configure.js"></script>
   <title>Configure</title>
@@ -13,13 +14,12 @@
     <!-- Instruction section -->
     <div class="row">
       <br />
-      <h3>2. Tell us a litle about your data:</h3>
-      <pre><code>@Catherine TODO: Figure out exactly what kind of tags we want for our viz algorithm and populate this table below.<br /> The stuff below is just things that seem like they might be useful...</code></pre>
+      <h3>2. Tell us a little about your data:</h3>
       <p>Tag your column types. This will help us find the best way to visualize your data.</p>
       <table class="u-full-width">
         <thead>
           <tr>
-            <th>Tag</th>
+            <th>Data tags</th>
             <th>Detail</th>
           </tr>
         </thead>
@@ -40,6 +40,16 @@
             <td><i>Quantitative</i></td>
             <td>A quantitative measure represents a numerical value.</td>
           </tr>
+        </tbody>
+      </table>
+      <table class="u-full-width">
+        <thead>
+          <tr>
+            <th>Interaction tags</th>
+            <th>Detail</th>
+          </tr>
+        </thead>
+        <tbody>
           <tr>
             <td><i>Interactive</i></td>
             <td>Interactive means you want us to try and find the best way for the viewer to interactive with this data attribute.</td>
@@ -63,8 +73,8 @@
         <thead>
           <tr>
             <th>Category</th>
-            <th>Data Type</th>
-            <th>Interactivity</th>
+            <th>Data tags</th>
+            <th>Interaction tags</th>
           </tr>
         </thead>
         <tbody id="data-body">

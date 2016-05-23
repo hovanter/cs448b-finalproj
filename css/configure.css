@@ -1,11 +1,10 @@
-#radio label {
-  float: right;
-  display: inline
+#data-body form {
+  margin-bottom: 0px;
 }
-radio {
-  display: inline;
-}
-#radio input {
+
+#data-body form input {
   width: auto;
-  margin-left: 3em;
+  margin-left: 10px;
+  margin-right: 5px;
+  margin-bottom: 0px;
 }

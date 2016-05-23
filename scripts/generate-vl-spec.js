@@ -3,19 +3,27 @@
 function createSpec(categoryToValues) {
   var csvString = sessionStorage.data;
   var results = Papa.parse(csvString, {
-    header: true
+    header: true,
+    dynamicTyping: true
   });
-  // console.log(results.data)
+  if (results.errors.length > 0) {
+    // Try again as JSON
+    csvString = Papa.unparse(sessionStorage.data);
+    results = Papa.parse(csvString, {
+      header: true,
+      dynamicTyping: true
+    });
+  }
 
   var vlSpec = {
     "data": {
       "values": results.data
     },
-    "mark": "bar",
+    "mark": "line",
     "encoding": {
       // TODO: Write code to generate the correct fields and types here automatically
-      "y": {"field": "latitude", "type": "quantitative"},
-      "x": {"field": "longitude", "type": "ordinal"}
+      "y": {"field": "DayOfWeek", "type": "ordinal"},
+      "x": {"field": "IncidentNumber", "type": "ordinal"}
     },
     "config": {
       "cell": {
