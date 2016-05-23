@@ -2,6 +2,8 @@ $( document ).ready(function() {
 
 	var quantSliders = JSON.parse(sessionStorage.filters).Quantitative;
 	var temporalSliders = JSON.parse(sessionStorage.filters).Temporal;
+	var nominalForms = JSON.parse(sessionStorage.filters).Nominal;
+
 	console.log(temporalSliders);
 	var categoryToValues = JSON.parse(sessionStorage.categoryToValues);
 	console.log(categoryToValues);
@@ -17,9 +19,17 @@ $( document ).ready(function() {
 		createSliderHTML(categoryToValues[name], name);
 		createSliderTime(categoryToValues[name], name);
 	}
+	for(var x = 0; x< nominalForms.length; x++){
+		name = nominalForms[x];
+		createCheckBoxHTML(categoryToValues[name], name);
+	}
+
+	function onlyUnique(value, index, self) { 
+    return self.indexOf(value) === index;
+}
+
 
 	function createSliderHTML(data, data_name){
-		console.log('hello');
 		var sliderHTML = '<div id="slider-'+data_name+'"></div>' + 
 			'<div id="'+data_name+'-values">' +
 				'<span id='+data_name+'-start"></span>' +
@@ -29,6 +39,20 @@ $( document ).ready(function() {
 			$("#sliders").append(sliderHTML);
 		return sliderHTML;
 	}
+
+	function createCheckBoxHTML(data, data_name){
+		console.log(data);
+		data  = data.filter(onlyUnique)
+		var checkBoxHTML = '<div id=checkbox-container-'+data_name+'>' + 
+											 '<form id=checkbox-form-'+data_name+'>';
+		for(var x=0; x<data.length;x++){
+			var checkBoxString = '<input type="checkbox" name="'+data_name+'" value="'+data[x]+'">'+data[x];
+			checkBoxHTML = checkBoxHTML + checkBoxString;
+		}
+		checkBoxHTML = checkBoxHTML + '</form></div>';
+		$("#checkboxes").append(checkBoxHTML);
+	}
+
 
 	function createSliderQuantitative(data, data_name){
 		var min = Math.min.apply(null, data);
@@ -132,6 +156,7 @@ $( document ).ready(function() {
 	    start: [ minDate.getTime(), maxDate.getTime() ],
 		});
 	}
+
 
 
 });
