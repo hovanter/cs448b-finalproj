@@ -1,9 +1,9 @@
 #radio label {
   float: right;
-    display: inline
+  display: inline
 }
 radio {
-    display: inline;
+  display: inline;
 }
 #radio input {
   width: auto;
