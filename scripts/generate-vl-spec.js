@@ -19,11 +19,11 @@ function createSpec(categoryToValues) {
     "data": {
       "values": results.data
     },
-    "mark": "line",
+    "mark": "circle",
     "encoding": {
       // TODO: Write code to generate the correct fields and types here automatically
-      "y": {"field": "DayOfWeek", "type": "ordinal"},
-      "x": {"field": "IncidentNumber", "type": "ordinal"}
+      "y": {"field": "lat", "type": "quantitative"},
+      "x": {"field": "lng", "type": "quantitative"}
     },
     "config": {
       "cell": {
