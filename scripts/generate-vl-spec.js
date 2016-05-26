@@ -21,9 +21,16 @@ function parseData() {
  *     string actually refers to.
  */
 function getFieldInfo() {
-  ft = JSON.parse(sessionStorage.dataToTags);
-  fieldString = [ft[0][0], ft[1][0]].sort().join("");
-  fieldLabels = ft.slice(0, 2);
+  var ft = JSON.parse(sessionStorage.dataToTags);
+  var keys = Object.keys(ft);
+  
+  // Fetch first two fields.
+  dt1 = ft[keys[0]]
+  dt2 = ft[keys[1]]
+
+  fieldString = [dt1[0][0], dt2[0][0]].sort().join("");
+  fieldLabels = [{"name": keys[0], "type": dt1[0]}, 
+                 {"name": keys[1], "type": dt2[0]}];
   return [fieldString, fieldLabels];
 }
 
@@ -32,19 +39,27 @@ function getFieldInfo() {
 function getMark() {
   fieldString = getFieldInfo()[0];
   return {
-    "CC": "circle", // scatter plot
-    "CQ": "bar",    // bar chart
+    "NN": "circle", // scatter plot
+    "NQ": "bar",    // bar chart
     "QQ": "circle", // scatter plot
-    "QT": "line"   // line plot
+    "QT": "line"    // line plot
   }[fieldString];
 }
 
 /* Returns the appropriate encoding for the given fields. */
-function getEncoding(fields) {
+function getEncoding() {
   fieldLabels = getFieldInfo()[1];
   return {
-      "y": {"field": fieldLabels[0].name, "type": fieldLabels[0].type},
-      "x": {"field": fieldLabels[1].name, "type": fieldLabels[1].type}
+      "y": {
+        "field": fieldLabels[0].name, 
+        "type": fieldLabels[0].type, 
+        "scale": {"zero": false}
+      },
+      "x": {
+        "field": fieldLabels[1].name, 
+        "type": fieldLabels[1].type, 
+        "scale": {"zero": false}
+      }
   }
 }
 
@@ -53,7 +68,7 @@ function getEncoding(fields) {
 function createSpec() {
   data = parseData();
   mark = getMark();
-  encoding = getEncoding(fields);
+  encoding = getEncoding();
 
   var vlSpec = {
     "data": {
@@ -72,7 +87,8 @@ function createSpec() {
 }
 
 $(document).ready(function() {
-  if (sessionStorage.dataToTags.length < 2) {
+  var ft = JSON.parse(sessionStorage.dataToTags);
+  if (Object.keys(ft).length < 2) {
     // Not enough data tags provided to create a viz.
     return;
   }
