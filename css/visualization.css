@@ -5,3 +5,17 @@ a.button {
 #vis {
 	overflow: scroll;
 }
+
+#slider-Time,
+#slider-IncidentNumber {
+	margin-top: 30px;
+}
+
+#checkboxes {
+	margin-top: 30px;
+}
+
+#checkboxes input {
+	margin-left: 10px;
+	margin-right: 5px;
+}

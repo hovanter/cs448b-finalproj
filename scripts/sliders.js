@@ -6,7 +6,6 @@ $( document ).ready(function() {
 
 	console.log(temporalSliders);
 	var categoryToValues = JSON.parse(sessionStorage.categoryToValues);
-	console.log(categoryToValues);
 
 	var name = "";
 	for(var x = 0; x< quantSliders.length; x++){
