@@ -1,5 +1,10 @@
 $( document ).ready(function() {
 
+	//may be error prone
+	var slider_index = 1;
+	
+
+
 	var quantSliders = JSON.parse(sessionStorage.filters).Quantitative;
 	var temporalSliders = JSON.parse(sessionStorage.filters).Temporal;
 	var nominalForms = JSON.parse(sessionStorage.filters).Nominal;
@@ -78,9 +83,11 @@ $( document ).ready(function() {
 		});
 		console.log(document.getElementById('sliders').children[1]);
 		var sliderValues = [
-			document.getElementById('sliders').children[1].children[0],
-			document.getElementById('sliders').children[1].children[1]
+			document.getElementById('sliders').children[slider_index].children[0],
+			document.getElementById('sliders').children[slider_index].children[1]
 		];
+
+		slider_index = slider_index + 2;
 
 		slider.noUiSlider.on('update', function( values, handle ) {
 			if(handle === 0){ 
@@ -129,11 +136,11 @@ $( document ).ready(function() {
 				decimals: 0
 			})
 		});
-		console.log(document.getElementById('sliders').children[2].children);
 		var sliderValues = [
-			document.getElementById('sliders').children[3].children[0],
-			document.getElementById('sliders').children[3].children[1]
+			document.getElementById('sliders').children[slider_index].children[0],
+			document.getElementById('sliders').children[slider_index].children[1]
 		];
+		slider_index = slider_index + 2;
 
 		slider.noUiSlider.on('update', function( values, handle ) {
 			if(handle === 0){ 
