@@ -68,5 +68,22 @@ function populateFilters(){
     }  
   }
   sessionStorage.filters = JSON.stringify(allFilters);
+
+  var dataToTags = {};
+  // For each row in the data table
+  $("#data-body tr").each(function() {
+    // Get the name of that data column
+    var dataName = this.childNodes[0].textContent;
+    try {
+      // Get the type tag, i.e. Ordinal, Nominal, etc.
+      dataTag = this.childNodes[1].querySelector("input:checked").value;
+      // Get the interaction tag, i.e. Interactive, Static, etc.
+      interactionTag = this.childNodes[2].querySelector("input:checked").value;
+      // Store it.
+      dataToTags[dataName] = [dataTag, interactionTag];
+    }
+    catch (err) {}
+  })
+  sessionStorage.dataToTags = JSON.stringify(dataToTags);
 }
   

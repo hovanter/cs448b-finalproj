@@ -1,30 +1,66 @@
-/* Creates a Vega-Lite spec given the user's category-to-values
- * mapping for the data. */
-function createSpec(categoryToValues) {
-  /*var csvString = sessionStorage.data;
-  var results = Papa.parse(csvString, {
+/* Parses data from sessionStorage into a form useable by Vega-Lite. */
+function parseData() {
+  var options = {
     header: true,
     dynamicTyping: true
-  });
-  if (results.errors.length <= 0) {*/
+  }
+  var csvString = sessionStorage.data;
+  var results = Papa.parse(csvString, options);
+  if (results.errors.length > 0) {
     // Try again as JSON
     csvString = Papa.unparse(sessionStorage.data);
-    results = Papa.parse(csvString, {
-      header: true,
-      dynamicTyping: true
-    });
-  //}
+    results = Papa.parse(csvString, options);
+  }
+  return results.data;
+}
+
+/* Fetches the user tags and returns
+ * (1) a "field string" consisting of the first letter of the types of 
+ *     the first two fields.
+ * (2) "field labels" indicating which field each letter in the field
+ *     string actually refers to.
+ */
+function getFieldInfo() {
+  ft = JSON.parse(sessionStorage.dataToTags);
+  fieldString = [ft[0][0], ft[1][0]].sort().join("");
+  fieldLabels = ft.slice(0, 2);
+  return [fieldString, fieldLabels];
+}
+
+/* Returns the appropriate mark for given the user's data tags and
+ * primary dimensions. */
+function getMark() {
+  fieldString = getFieldInfo()[0];
+  return {
+    "CC": "circle", // scatter plot
+    "CQ": "bar",    // bar chart
+    "QQ": "circle", // scatter plot
+    "QT": "line"   // line plot
+  }[fieldString];
+}
+
+/* Returns the appropriate encoding for the given fields. */
+function getEncoding(fields) {
+  fieldLabels = getFieldInfo()[1];
+  return {
+      "y": {"field": fieldLabels[0].name, "type": fieldLabels[0].type},
+      "x": {"field": fieldLabels[1].name, "type": fieldLabels[1].type}
+  }
+}
+
+/* Creates a Vega-Lite spec given the user's category-to-values
+ * mapping for the data. */
+function createSpec() {
+  data = parseData();
+  mark = getMark();
+  encoding = getEncoding(fields);
 
   var vlSpec = {
     "data": {
-      "values": results.data
+      "values": data
     },
-    "mark": "circle",
-    "encoding": {
-      // TODO: Write code to generate the correct fields and types here automatically
-      "y": {"field": "lng", "type": "quantitative"},
-      "x": {"field": "lat", "type": "quantitative"}
-    },
+    "mark": mark,
+    "encoding": encoding,
     "config": {
       "cell": {
         width: 600,
@@ -36,6 +72,10 @@ function createSpec(categoryToValues) {
 }
 
 $(document).ready(function() {
+  if (sessionStorage.dataToTags.length < 2) {
+    // Not enough data tags provided to create a viz.
+    return;
+  }
   var embedSpec = {
     mode: "vega-lite",
     renderer: "svg",
