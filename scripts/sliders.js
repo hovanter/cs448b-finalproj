@@ -1,8 +1,15 @@
 $( document ).ready(function() {
 
+	//may be error prone
+	var slider_index = 1;
+	
+
+
 	var quantSliders = JSON.parse(sessionStorage.filters).Quantitative;
 	var temporalSliders = JSON.parse(sessionStorage.filters).Temporal;
 	var nominalForms = JSON.parse(sessionStorage.filters).Nominal;
+	var ordinalForms = JSON.parse(sessionStorage.filters).Ordinal;
+
 
 	console.log(temporalSliders);
 	var categoryToValues = JSON.parse(sessionStorage.categoryToValues);
@@ -23,9 +30,14 @@ $( document ).ready(function() {
 		createCheckBoxHTML(categoryToValues[name], name);
 	}
 
+	for(var x = 0; x< ordinalForms.length; x++){
+		name = ordinalForms[x];
+		createCheckBoxHTML(categoryToValues[name], name);
+	}
+
 	function onlyUnique(value, index, self) { 
     return self.indexOf(value) === index;
-}
+	}
 
 
 	function createSliderHTML(data, data_name){
@@ -40,15 +52,16 @@ $( document ).ready(function() {
 	}
 
 	function createCheckBoxHTML(data, data_name){
-		console.log(data);
+		console.log(data_name);
 		data  = data.filter(onlyUnique)
-		var checkBoxHTML = '<div id=checkbox-container-'+data_name+'>' + 
-											 '<form id=checkbox-form-'+data_name+'>';
+		var checkBoxHTML = '<div class="checkbox-list" id=checkbox-container-'+data_name+'>' + 
+											 '<form id=checkbox-form-'+data_name+'>' +
+											 '<ul>';
 		for(var x=0; x<data.length;x++){
-			var checkBoxString = '<input type="checkbox" name="'+data_name+'" value="'+data[x]+'">'+data[x];
+			var checkBoxString = '<li><input type="checkbox" checked=true name="'+data_name+'" value="'+data[x]+'">'+data[x]+'</li>';
 			checkBoxHTML = checkBoxHTML + checkBoxString;
 		}
-		checkBoxHTML = checkBoxHTML + '</form></div>';
+		checkBoxHTML = checkBoxHTML + '</ul></form></div>';
 		$("#checkboxes").append(checkBoxHTML);
 	}
 
@@ -70,9 +83,11 @@ $( document ).ready(function() {
 		});
 		console.log(document.getElementById('sliders').children[1]);
 		var sliderValues = [
-			document.getElementById('sliders').children[1].children[0],
-			document.getElementById('sliders').children[1].children[1]
+			document.getElementById('sliders').children[slider_index].children[0],
+			document.getElementById('sliders').children[slider_index].children[1]
 		];
+
+		slider_index = slider_index + 2;
 
 		slider.noUiSlider.on('update', function( values, handle ) {
 			if(handle === 0){ 
@@ -121,11 +136,11 @@ $( document ).ready(function() {
 				decimals: 0
 			})
 		});
-		console.log(document.getElementById('sliders').children[2].children);
 		var sliderValues = [
-			document.getElementById('sliders').children[3].children[0],
-			document.getElementById('sliders').children[3].children[1]
+			document.getElementById('sliders').children[slider_index].children[0],
+			document.getElementById('sliders').children[slider_index].children[1]
 		];
+		slider_index = slider_index + 2;
 
 		slider.noUiSlider.on('update', function( values, handle ) {
 			if(handle === 0){ 

@@ -19,3 +19,18 @@ a.button {
 	margin-left: 10px;
 	margin-right: 5px;
 }
+
+.checkbox-list{
+	max-height: 150px;
+	max-width: 300px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+ul{
+	list-style-type: none;
+}
+
+li{
+	margin-bottom: -1rem;
+}
