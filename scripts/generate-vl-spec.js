@@ -5,8 +5,9 @@ function parseData() {
     dynamicTyping: true
   }
   var csvString = sessionStorage.data;
-  var results = Papa.parse(csvString, options);
-  if (results.errors.length <= 0) {
+
+  results = Papa.parse(csvString, options);
+  if (results.errors.length > 0) {
     // Try again as JSON
     csvString = Papa.unparse(sessionStorage.data);
     results = Papa.parse(csvString, options);
@@ -39,10 +40,16 @@ function getFieldInfo() {
 function getMark() {
   fieldString = getFieldInfo()[0];
   return {
-    "NN": "circle", // scatter plot
-    "NQ": "bar",    // bar chart
+    "NO": "circle", // scatter plot
+    "NN": "bar",    // bar chart
+    "NQ": "circle", // scatter plot
+    "NT": "line",   // line plot
+    "OO": "circle", // scatter plot
+    "OQ": "circle", // scatter plot
+    "OT": "circle", // scatter plot
     "QQ": "circle", // scatter plot
-    "QT": "line"    // line plot
+    "QT": "line",   // line plot
+    "TT": "circle", // scatter plot
   }[fieldString];
 }
 
