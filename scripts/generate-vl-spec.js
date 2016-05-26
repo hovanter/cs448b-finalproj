@@ -6,7 +6,7 @@ function parseData() {
   }
   var csvString = sessionStorage.data;
   var results = Papa.parse(csvString, options);
-  if (results.errors.length > 0) {
+  if (results.errors.length <= 0) {
     // Try again as JSON
     csvString = Papa.unparse(sessionStorage.data);
     results = Papa.parse(csvString, options);
