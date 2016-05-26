@@ -1,3 +1,6 @@
+/* This basically implements a few cases of the SQL "SELECT WHERE"
+ * statement. Yay, query relaxation lol. */
+
 /* Returns the DOM nodes of all data where the given column
  * has the given value. */
 function selectDataByColumnValue(column, value) {

@@ -18,9 +18,9 @@ function parseData() {
 }
 
 /* Fetches the user tags and returns
- * (1) a "field string" consisting of the first letter of the types of 
- *     the first two fields.
- * (2) "field labels" indicating which field each letter in the field
+ * (1) a "tag string" consisting of the first letters of the types of 
+ *     tags in the first two data columns.
+ * (2) "tag columns" indicating which coolumn each letter in the tag
  *     string actually refers to.
  */
 function getFieldInfo() {
@@ -31,42 +31,42 @@ function getFieldInfo() {
   dt1 = ft[keys[0]]
   dt2 = ft[keys[1]]
 
-  fieldString = [dt1[0][0], dt2[0][0]].sort().join("");
-  fieldLabels = [{"name": keys[0], "type": dt1[0]}, 
-                 {"name": keys[1], "type": dt2[0]}];
-  return [fieldString, fieldLabels];
+  tagString = [dt1[0][0], dt2[0][0]].sort().join("");
+  tagColumns = [{"name": keys[0], "type": dt1[0]}, 
+                {"name": keys[1], "type": dt2[0]}];
+  return [tagString, tagColumns];
 }
 
 /* Returns the appropriate mark for given the user's data tags and
  * primary dimensions. */
 function getMark() {
-  fieldString = getFieldInfo()[0];
+  tagString = getFieldInfo()[0];
   return {
     "NO": "circle", // scatter plot
-    "NN": "bar",    // bar chart
-    "NQ": "circle", // scatter plot
+    "NN": "circle", // scatter plot
+    "NQ": "bar",    // bar chart
     "NT": "line",   // line plot
     "OO": "circle", // scatter plot
-    "OQ": "circle", // scatter plot
-    "OT": "circle", // scatter plot
+    "OQ": "bar",    // bar chart
+    "OT": "circle", // line plot
     "QQ": "circle", // scatter plot
     "QT": "line",   // line plot
     "TT": "circle", // scatter plot
-  }[fieldString];
+  }[tagString];
 }
 
 /* Returns the appropriate encoding for the given fields. */
 function getEncoding() {
-  fieldLabels = getFieldInfo()[1];
+  tagColumns = getFieldInfo()[1];
   return {
       "y": {
-        "field": fieldLabels[0].name, 
-        "type": fieldLabels[0].type, 
+        "field": tagColumns[0].name, 
+        "type": tagColumns[0].type, 
         "scale": {"zero": false}
       },
       "x": {
-        "field": fieldLabels[1].name, 
-        "type": fieldLabels[1].type, 
+        "field": tagColumns[1].name, 
+        "type": tagColumns[1].type, 
         "scale": {"zero": false}
       }
   }
