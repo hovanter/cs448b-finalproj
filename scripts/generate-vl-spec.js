@@ -4,11 +4,14 @@ function parseData() {
     header: true,
     dynamicTyping: true
   }
-  var csvString = sessionStorage.data;
-  results = Papa.parse(csvString, options);
-  if (results.errors.length > 0) {
-    // Try again as JSON
+  var input = sessionStorage.data.trim();
+  if (input[0] == "[") {
+    // Try as JSON
     csvString = Papa.unparse(sessionStorage.data);
+    results = Papa.parse(csvString, options);
+  }
+  else {
+    // Try as CSV
     results = Papa.parse(csvString, options);
   }
   return results.data;
@@ -85,7 +88,7 @@ function createSpec() {
     "config": {
       "cell": {
         width: 600,
-        height: 600
+        height: 400
       }
     }
   };
@@ -107,5 +110,7 @@ $(document).ready(function() {
     // Callback receiving the View instance and parsed Vega spec
     // result.view is the View, which resides under the '#vis' element
     $(".vega-actions a").addClass("button");
+    addHoverInteractions();
+    addClickInteractions();
   });
 });

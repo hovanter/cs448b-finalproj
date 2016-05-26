@@ -3,7 +3,7 @@
  $( document ).ready(function() {
 
   var userData = JSON.parse(sessionStorage.data);
-  var datumObject = userData['data'][0];
+  var datumObject = userData[0];
   var dataHtml = '<form action="">'+
     '<input type="radio" name="data-type" value="Ordinal"> Ordinal </input>' +
     '<input type="radio" name="data-type" value="Nominal"> Nominal </input>' +
@@ -22,9 +22,9 @@
     $('#data-body').append('<tr><td>' + key + '</td><td>'+ dataHtml +'</td><td>'+ interactiveHtml+'</td></tr>');
   }
 
-  for(var x = 0; x<userData['data'].length; x++){
-    for(var key in userData['data'][x]){
-      categoryToValue[key].push(userData['data'][x][key]);
+  for(var x = 0; x<userData.length; x++){
+    for(var key in userData[x]){
+      categoryToValue[key].push(userData[x][key]);
     }
   }
 
