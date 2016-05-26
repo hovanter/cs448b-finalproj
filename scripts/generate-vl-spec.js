@@ -6,7 +6,7 @@ function createSpec(categoryToValues) {
     header: true,
     dynamicTyping: true
   });
-  if (results.errors.length > 0) {
+  if (results.errors.length <= 0) {
     // Try again as JSON
     csvString = Papa.unparse(sessionStorage.data);
     results = Papa.parse(csvString, {
