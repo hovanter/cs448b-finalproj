@@ -8,3 +8,10 @@
   margin-right: 5px;
   margin-bottom: 0px;
 }
+
+#layout-template {
+  background: url('../assets/layout-template.png') no-repeat;
+  height: 500px;
+  width: 500px;
+  background-size: contain;
+}

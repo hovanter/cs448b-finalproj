@@ -10,9 +10,9 @@
     '<input type="radio" name="data-type" value="Temporal"> Temporal </input>' +
     '<input type="radio" name="data-type" value="Quantitative"> Quantitative </input></form>';
   var interactiveHtml = '<form action="">'+
-    '<input type="radio" name="interactive" value="Interactive"> Interactive </input>'+
-    '<input type="radio" name="interactive" value="Static"> Static </input>'+
-    '<input type="radio" name="interactive" value="Auto"> Auto </input>'+
+    '<input type="radio" name="primary-vis" value="1"> 1 </input>'+
+    '<input type="radio" name="linked-vis" value="2"> 2 </input>'+
+    '<input type="radio" name="filters" value="3"> 3 </input>'+
     '</form>';
 
 
@@ -57,7 +57,7 @@ function populateFilters(){
       if(col.childNodes[0].nodeType === 3){
         catName = col.childNodes[0].data; //text
 
-      } 
+      }
       else{
         var radioGroup = col.childNodes[0].children[0].name
         if ($('input[name=' + radioGroup + ']:checked').length > 0) {
@@ -65,7 +65,7 @@ function populateFilters(){
           allFilters[radioValue].push(catName);
         }
       }
-    }  
+    }
   }
   sessionStorage.filters = JSON.stringify(allFilters);
 
@@ -86,4 +86,3 @@ function populateFilters(){
   })
   sessionStorage.dataToTags = JSON.stringify(dataToTags);
 }
-  
