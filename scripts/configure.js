@@ -9,17 +9,17 @@
     '<input type="radio" name="data-type" value="Nominal"> Nominal </input>' +
     '<input type="radio" name="data-type" value="Temporal"> Temporal </input>' +
     '<input type="radio" name="data-type" value="Quantitative"> Quantitative </input></form>';
-  var interactiveHtml = '<form action="">'+
-    '<input type="radio" name="primary-vis" value="1"> 1 </input>'+
-    '<input type="radio" name="linked-vis" value="2"> 2 </input>'+
-    '<input type="radio" name="filters" value="3"> 3 </input>'+
+  var layoutHtml = '<form action="">'+
+    '<input type="radio" name="layout" value="1"> 1 </input>'+
+    '<input type="radio" name="layout" value="2"> 2 </input>'+
+    '<input type="radio" name="layout" value="3"> 3 </input>'+
     '</form>';
 
 
   var categoryToValue = {};
   for(var key in datumObject){
     categoryToValue[key] = [];
-    $('#data-body').append('<tr><td>' + key + '</td><td>'+ dataHtml +'</td><td>'+ interactiveHtml+'</td></tr>');
+    $('#data-body').append('<tr><td>' + key + '</td><td>'+ dataHtml +'</td><td>'+ layoutHtml+'</td></tr>');
   }
 
   for(var x = 0; x<userData.length; x++){
@@ -47,7 +47,7 @@
   })();
 });
 
-var allFilters = {Ordinal:[], Nominal:[], Temporal:[], Quantitative:[], Interactive:[],nonInteractive:[]};
+var allFilters = {Ordinal:[], Nominal:[], Temporal:[], Quantitative:[], 1:[],2:[],3:[]};
 function populateFilters(){
   console.log('populating filters');
   var tableBody = document.getElementById("data-body");
@@ -56,7 +56,6 @@ function populateFilters(){
     for (var j = 0, col; col = row.cells[j]; j++) {
       if(col.childNodes[0].nodeType === 3){
         catName = col.childNodes[0].data; //text
-
       }
       else{
         var radioGroup = col.childNodes[0].children[0].name
