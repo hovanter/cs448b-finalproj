@@ -92,9 +92,11 @@ $( document ).ready(function() {
 		slider.noUiSlider.on('update', function( values, handle ) {
 			if(handle === 0){ 
 				sliderValues[handle].textContent = "start: " + values[handle] + " ";
+				console.log(selectDataNodeByColumnValueRange(data_name, [values[0], values[1]]));
 			}
 			else{
 				sliderValues[handle].textContent = "end: " + values[handle] + " ";
+				console.log(selectDataNodeByColumnValueRange(data_name, [values[0], values[1]]));
 			}
 		});
 	}
@@ -145,6 +147,7 @@ $( document ).ready(function() {
 		slider.noUiSlider.on('update', function( values, handle ) {
 			if(handle === 0){ 
 				sliderValues[handle].textContent = "start: " + dataToReadableTime(values[handle]) + " ";
+
 			}
 			else{
 				sliderValues[handle].textContent = "end: " + dataToReadableTime(values[handle]) + " ";
