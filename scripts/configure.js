@@ -47,8 +47,9 @@
   })();
 });
 
-var allFilters = {Ordinal:[], Nominal:[], Temporal:[], Quantitative:[], 1:[],2:[],3:[]};
+var allFilters;
 function populateFilters(){
+  allFilters = {Ordinal:[], Nominal:[], Temporal:[], Quantitative:[], 1:[],2:[],3:[]};
   console.log('populating filters');
   var tableBody = document.getElementById("data-body");
   for (var i = 0, row; row = tableBody.rows[i]; i++) {
@@ -66,6 +67,21 @@ function populateFilters(){
       }
     }
   }
+
+  // Error: User must specify 2 categories for primary vis. in layout
+  if (allFilters[1].length != 2) {
+    alert("You assigned " + allFilters[1].length + " category(s) to PRIMARY visualization. \n\n" +
+          "2 categories can be assigned.");
+    return;
+  }
+
+  /* PLEASE UNCOMMENT */
+  // // Error: User must specify 1 category for linked vis. in layout
+  // if (allFilters[2].length != 1) {
+  //    alert("You assigned " + allFilters[1].length + " category(s) to the LINKED visualization. \n\n" +
+  //       "1 category can be assigned.");
+  //   return;
+  // }
   sessionStorage.filters = JSON.stringify(allFilters);
 
   var dataToTags = {};
