@@ -20,7 +20,7 @@ a.button {
 	margin-right: 5px;
 }
 
-.checkbox-list{
+.checkbox-div{
 	max-height: 150px;
 	max-width: 300px;
 	overflow-y: scroll;

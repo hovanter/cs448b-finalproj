@@ -39,6 +39,34 @@ $( document ).ready(function() {
     return self.indexOf(value) === index;
 	}
 
+	function updateDOMNodes(allValues, toDisplay){
+		console.log(allValues);
+		console.log(toDisplay);
+		for(var x = 0; x< allValues.length; x++){
+			allValues[x].style.visibility = 'hidden';
+		}
+		for(var x = 0; x< toDisplay.length; x++){
+			allValues[x].style.visibility = 'visible';
+		}
+	}
+
+	function updateCategory(data_name){
+		var checkboxCategory = document.getElementById('checkbox-form-' + data_name);
+		var listItems = checkboxCategory.children[0].children;
+		var allItems = [];
+		var toDisplay = [];
+		for(var x = 0; x < listItems.length; x++){
+			var input = listItems[x].children[0];
+			if(input.checked){
+				toDisplay.push(input.value);
+			}
+			allItems.push(input.value);
+		}
+		console.log(data_name);
+		var allItemsDOM = selectDataNodeByColumnValues(data_name, allItems);
+		var toDisplayDOM = selectDataNodeByColumnValues(data_name, toDisplay);
+		updateDOMNodes(allItemsDOM, toDisplayDOM);
+	}
 
 	function createSliderHTML(data, data_name){
 		var sliderHTML = '<div id="slider-'+data_name+'"></div>' + 
@@ -54,17 +82,32 @@ $( document ).ready(function() {
 	function createCheckBoxHTML(data, data_name){
 		console.log(data_name);
 		data  = data.filter(onlyUnique)
-		var checkBoxHTML = '<div class="checkbox-list" id=checkbox-container-'+data_name+'>' + 
-											 '<form id=checkbox-form-'+data_name+'>' +
-											 '<ul>';
-		for(var x=0; x<data.length;x++){
-			var checkBoxString = '<li><input type="checkbox" checked=true name="'+data_name+'" value="'+data[x]+'">'+data[x]+'</li>';
-			checkBoxHTML = checkBoxHTML + checkBoxString;
-		}
-		checkBoxHTML = checkBoxHTML + '</ul></form></div>';
-		$("#checkboxes").append(checkBoxHTML);
-	}
+		var checkboxDiv = document.createElement('div');
+		checkboxDiv.className = "checkbox-div";
+		checkboxDiv.id = "checkbox-container-" + data_name;
+		var checkboxForm = document.createElement('form');
+		checkboxForm.id = "checkbox-form-" + data_name;
+		var checkboxList = document.createElement('ul');
 
+		checkboxForm.appendChild(checkboxList);
+		checkboxDiv.appendChild(checkboxForm);
+		document.getElementById('checkboxes').appendChild(checkboxDiv);
+
+		for(var x=0; x<data.length;x++){
+			var listItem = document.createElement('li');
+			var inputItem = document.createElement('input');
+			inputItem.type = "checkbox";
+			inputItem.checked = true;
+			inputItem.name = data_name;
+			inputItem.value = data[x];
+			listItem.innerHTML = data[x];
+			listItem.appendChild(inputItem);
+			checkboxList.appendChild(listItem);
+			inputItem.onclick = function(e){
+        updateCategory(e.target.name);
+    	}
+		}
+	}
 
 	function createSliderQuantitative(data, data_name){
 		var min = Math.min.apply(null, data);
@@ -81,7 +124,6 @@ $( document ).ready(function() {
 				decimals: 0
 			})
 		});
-		console.log(document.getElementById('sliders').children[1]);
 		var sliderValues = [
 			document.getElementById('sliders').children[slider_index].children[0],
 			document.getElementById('sliders').children[slider_index].children[1]
@@ -92,11 +134,15 @@ $( document ).ready(function() {
 		slider.noUiSlider.on('update', function( values, handle ) {
 			if(handle === 0){ 
 				sliderValues[handle].textContent = "start: " + values[handle] + " ";
-				console.log(selectDataNodeByColumnValueRange(data_name, [values[0], values[1]]));
+				var allValues = selectDataNodeByColumnValueRange(data_name, [min, max]);
+				var toDisplay = selectDataNodeByColumnValueRange(data_name, [values[0], values[1]]);
+				updateDOMNodes(allValues, toDisplay);
 			}
 			else{
 				sliderValues[handle].textContent = "end: " + values[handle] + " ";
-				console.log(selectDataNodeByColumnValueRange(data_name, [values[0], values[1]]));
+				var allValues = selectDataNodeByColumnValueRange(data_name, [min, max]);
+				var toDisplay = selectDataNodeByColumnValueRange(data_name, [values[0], values[1]]);
+				updateDOMNodes(allValues, toDisplay);
 			}
 		});
 	}
@@ -147,10 +193,16 @@ $( document ).ready(function() {
 		slider.noUiSlider.on('update', function( values, handle ) {
 			if(handle === 0){ 
 				sliderValues[handle].textContent = "start: " + dataToReadableTime(values[handle]) + " ";
+				var allValues = selectDataNodeByColumnValueRange(data_name, [min, max]);
+				var toDisplay = selectDataNodeByColumnValueRange(data_name, [values[0], values[1]]);
+				updateDOMNodes(allValues, toDisplay);
 
 			}
 			else{
 				sliderValues[handle].textContent = "end: " + dataToReadableTime(values[handle]) + " ";
+				var allValues = selectDataNodeByColumnValueRange(data_name, [min, max]);
+				var toDisplay = selectDataNodeByColumnValueRange(data_name, [values[0], values[1]]);
+				updateDOMNodes(allValues, toDisplay);
 			}
 		});
 	}
