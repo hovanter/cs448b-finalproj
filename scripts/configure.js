@@ -4,20 +4,30 @@
 
   var userData = JSON.parse(sessionStorage.data);
   var datumObject = userData[0];
-  var dataHtml = '<form action="">'+
-    '<input type="radio" name="data-type" value="Ordinal"> Ordinal </input>' +
-    '<input type="radio" name="data-type" value="Nominal"> Nominal </input>' +
-    '<input type="radio" name="data-type" value="Temporal"> Temporal </input>' +
-    '<input type="radio" name="data-type" value="Quantitative"> Quantitative </input></form>';
   var layoutHtml = '<form action="">'+
     '<input type="radio" name="layout" value="1"> 1 </input>'+
     '<input type="radio" name="layout" value="2"> 2 </input>'+
     '<input type="radio" name="layout" value="3"> 3 </input>'+
     '</form>';
 
-
   var categoryToValue = {};
   for(var key in datumObject){
+    var dataHtml = '<form action="">'+
+      '<input type="radio" name="data-type" value="Ordinal"> Ordinal </input>' +
+      '<input type="radio" name="data-type" value="Nominal"> Nominal </input>';
+
+    // TODO: Check if the datatype is not temporal
+    dataHtml += '<input type="radio" name="data-type" value="Temporal"> Temporal </input>'
+
+    // If the datatype is not quantitative
+    if(isNaN(datumObject[key]))
+      dataHtml += '<input type="radio" name="data-type" value="Quantitative" disabled> <span style="color:#ccc">Quantitative</span> </input>';
+    else
+      dataHtml += '<input type="radio" name="data-type" value="Quantitative"> Quantitative </input>';
+
+    dataHtml += '</form>';
+
+    // console.log(key, " ", )
     categoryToValue[key] = [];
     $('#data-body').append('<tr><td>' + key + '</td><td>'+ dataHtml +'</td><td>'+ layoutHtml+'</td></tr>');
   }
@@ -67,7 +77,7 @@ function populateFilters(){
       }
     }
   }
-
+  console.log(allFilters)
   // Error: User must specify 2 categories for primary vis. in layout
   if (allFilters[1].length != 2) {
     alert("You assigned " + allFilters[1].length + " category(s) to PRIMARY visualization. \n\n" +
@@ -99,5 +109,6 @@ function populateFilters(){
     }
     catch (err) {}
   })
+
   sessionStorage.dataToTags = JSON.stringify(dataToTags);
 }

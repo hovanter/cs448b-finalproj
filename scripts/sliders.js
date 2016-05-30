@@ -2,7 +2,7 @@ $( document ).ready(function() {
 
 	//may be error prone
 	var slider_index = 1;
-	
+
 
 
 	var quantSliders = JSON.parse(sessionStorage.filters).Quantitative;
@@ -16,32 +16,37 @@ $( document ).ready(function() {
 
 	var name = "";
 	for(var x = 0; x< quantSliders.length; x++){
+		console.log("QUANTITATIVE slider")
 		name = quantSliders[x];
 		createSliderHTML(categoryToValues[name], name);
 		createSliderQuantitative(categoryToValues[name], name);
 	}
 	for(var x = 0; x< temporalSliders.length; x++){
+		console.log("TEMPORAL slider")
 		name = temporalSliders[x];
 		createSliderHTML(categoryToValues[name], name);
 		createSliderTime(categoryToValues[name], name);
 	}
 	for(var x = 0; x< nominalForms.length; x++){
+		console.log("NOMINAL slider")
 		name = nominalForms[x];
 		createCheckBoxHTML(categoryToValues[name], name);
 	}
 
 	for(var x = 0; x< ordinalForms.length; x++){
+		console.log("ORDINAL slider")
 		name = ordinalForms[x];
 		createCheckBoxHTML(categoryToValues[name], name);
 	}
 
-	function onlyUnique(value, index, self) { 
+	function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
 	}
 
 
 	function createSliderHTML(data, data_name){
-		var sliderHTML = '<div id="slider-'+data_name+'"></div>' + 
+		console.log('Creating slider HTML')
+		var sliderHTML = '<div id="slider-'+data_name+'"></div>' +
 			'<div id="'+data_name+'-values">' +
 				'<span id='+data_name+'-start"></span>' +
 				'<span id='+data_name+'-end"></span>' +
@@ -52,9 +57,10 @@ $( document ).ready(function() {
 	}
 
 	function createCheckBoxHTML(data, data_name){
+		console.log('Creating CheckBox HTML')
 		console.log(data_name);
 		data  = data.filter(onlyUnique)
-		var checkBoxHTML = '<div class="checkbox-list" id=checkbox-container-'+data_name+'>' + 
+		var checkBoxHTML = '<div class="checkbox-list" id=checkbox-container-'+data_name+'>' +
 											 '<form id=checkbox-form-'+data_name+'>' +
 											 '<ul>';
 		for(var x=0; x<data.length;x++){
@@ -65,8 +71,9 @@ $( document ).ready(function() {
 		$("#checkboxes").append(checkBoxHTML);
 	}
 
-
 	function createSliderQuantitative(data, data_name){
+		console.log('Creating Slider Quantitative')
+
 		var min = Math.min.apply(null, data);
 	  var max = Math.max.apply(null, data);
 		var slider = document.getElementById('slider-'+data_name);
@@ -90,7 +97,7 @@ $( document ).ready(function() {
 		slider_index = slider_index + 2;
 
 		slider.noUiSlider.on('update', function( values, handle ) {
-			if(handle === 0){ 
+			if(handle === 0){
 				sliderValues[handle].textContent = "start: " + values[handle] + " ";
 			}
 			else{
@@ -121,10 +128,13 @@ $( document ).ready(function() {
 
 	//will accept of form hh:mm raging from 00:00 - 23:59
 	function createSliderTime(data, data_name){
+		console.log('Creating Time Slider')
 		var slider = document.getElementById('slider-'+data_name);
 		var transformedData = data.map(readableTimeToData);
+		console.log(transformedData)
 		var min = Math.min.apply(null, transformedData);
 	  var max = Math.max.apply(null, transformedData);
+		console.log(min, ' ', max)
 		noUiSlider.create(slider, {
 			start: [min, max],
 			connect: true,
@@ -143,7 +153,7 @@ $( document ).ready(function() {
 		slider_index = slider_index + 2;
 
 		slider.noUiSlider.on('update', function( values, handle ) {
-			if(handle === 0){ 
+			if(handle === 0){
 				sliderValues[handle].textContent = "start: " + dataToReadableTime(values[handle]) + " ";
 			}
 			else{
@@ -154,6 +164,8 @@ $( document ).ready(function() {
 
 	//only will accept properly formatted javascript dates e.g mm/dd/yyyy
 	function createSliderDate(data, data_name){
+		console.log('Creating Date Slider')
+
 		var date_array = [];
 		for(var x=0; x < data.length; x++){
 			date_array.push(new Date(data[x]));
