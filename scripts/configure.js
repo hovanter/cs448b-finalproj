@@ -17,7 +17,11 @@
       '<input type="radio" name="data-type" value="Nominal"> Nominal </input>';
 
     // TODO: Check if the datatype is not temporal
-    dataHtml += '<input type="radio" name="data-type" value="Temporal"> Temporal </input>'
+    var d = new Date(datumObject[key])
+    if(isNaN(d.valueOf()))
+      dataHtml += '<input type="radio" name="data-type" value="Temporal" disabled> <span style="color:#ccc">Temporal</span> </input>'
+    else
+      dataHtml += '<input type="radio" name="data-type" value="Temporal"> Temporal </input>'
 
     // If the datatype is not quantitative
     if(isNaN(datumObject[key]))
