@@ -99,6 +99,7 @@ function populateFilters(){
   sessionStorage.filters = JSON.stringify(allFilters);
 
   var dataToTags = {};
+  var tagsToData = {};
   // For each row in the data table
   $("#data-body tr").each(function() {
     // Get the name of that data column
@@ -106,13 +107,19 @@ function populateFilters(){
     try {
       // Get the type tag, i.e. Ordinal, Nominal, etc.
       dataTag = this.childNodes[1].querySelector("input:checked").value;
-      // Get the interaction tag, i.e. Interactive, Static, etc.
-      interactionTag = this.childNodes[2].querySelector("input:checked").value;
+      // Get the layout tag, i.e. 1, 2, or 3.
+      layoutTag = this.childNodes[2].querySelector("input:checked").value;
       // Store it.
-      dataToTags[dataName] = [dataTag, interactionTag];
+      dataToTags[dataName] = [dataTag, layoutTag];
+      if (tagsToData[layoutTag] != undefined) {
+        tagsToData[layoutTag].push([dataName, dataTag]);
+      }
+      else {
+        tagsToData[layoutTag] = [[dataName, dataTag]];
+      }
     }
     catch (err) {}
   })
-
   sessionStorage.dataToTags = JSON.stringify(dataToTags);
+  sessionStorage.tagsToData = JSON.stringify(tagsToData);
 }

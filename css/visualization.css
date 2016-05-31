@@ -2,11 +2,11 @@ a.button {
 	margin-right: 4px;
 }
 
-/*
-#vis {
+#vis,
+#vis-secondary {
+	margin-top: 30px;
 	overflow: scroll;
-}*/
-
+}
 
 #slider-Time,
 #slider-IncidentNumber {
@@ -40,11 +40,7 @@ a.button {
 }
 
 .noUi-handle {
-	width: 34px !important;
-	height: 34px !important;
-	border-radius: 50% !important;
-	box-shadow: none !important;
-	top: -10px !important;
+	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.05) !important;
 }
 
 .noUi-connect {
