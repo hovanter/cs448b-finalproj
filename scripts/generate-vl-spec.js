@@ -74,7 +74,30 @@ function getEncoding() {
 
 /* Creates a Vega-Lite spec given the user's category-to-values
  * mapping for the data. */
-function createSpec() {
+function createPrimarySpec() {
+  data = parseData();
+  mark = getMark();
+  encoding = getEncoding();
+
+  var vlSpec = {
+    "data": {
+      "values": data
+    },
+    "mark": mark,
+    "encoding": encoding,
+    "config": {
+      "cell": {
+        width: 600,
+        height: 400
+      }
+    }
+  };
+  return vlSpec;
+}
+
+/* Creates a Vega-Lite spec given the user's category-to-values
+ * mapping for the data. */
+function createSecondarySpec() {
   data = parseData();
   mark = getMark();
   encoding = getEncoding();
@@ -101,16 +124,36 @@ $(document).ready(function() {
     // Not enough data tags provided to create a viz.
     return;
   }
-  var embedSpec = {
+
+  var primaryEmbedSpec = {
     mode: "vega-lite",
     renderer: "svg",
-    spec: createSpec(sessionStorage.categoryToValues)
+    spec: createPrimarySpec()
   }
-  vg.embed("#vis", embedSpec, function(error, result) {
+  vg.embed("#vis", primaryEmbedSpec, function(error, result) {
     // Callback receiving the View instance and parsed Vega spec
     // result.view is the View, which resides under the '#vis' element
     $(".vega-actions a").addClass("button");
     addHoverInteractions();
     addClickInteractions();
   });
+
+  if (Object.keys(ft).length < 3) {
+    // Not enough data tags provided to create a secondary viz.
+    return;
+  }
+
+  var secondaryEmbedSpec = {
+    mode: "vega-lite",
+    renderer: "svg",
+    spec: createSecondarySpec()
+  }
+  vg.embed("#vis-secondary", secondaryEmbedSpec, function(error, result) {
+    // Callback receiving the View instance and parsed Vega spec
+    // result.view is the View, which resides under the '#vis' element
+    $(".vega-actions a").addClass("button");
+    //addHoverInteractions();
+    //addClickInteractions();
+  });
+
 });

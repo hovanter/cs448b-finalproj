@@ -102,12 +102,15 @@ $( document ).ready(function() {
 		for(var x=0; x<data.length;x++){
 			var listItem = document.createElement('li');
 			var inputItem = document.createElement('input');
+			var itemDescrip = document.createElement('span');
+			var itemName = data[x][0] + data[x].slice(1).toLowerCase();
 			inputItem.type = "checkbox";
 			inputItem.checked = true;
 			inputItem.name = data_name;
-			inputItem.value = data[x];
-			listItem.innerHTML = data[x];
+			inputItem.value = itemName;
+			itemDescrip.innerHTML = itemName;
 			listItem.appendChild(inputItem);
+			listItem.appendChild(itemDescrip);
 			checkboxList.appendChild(listItem);
 			inputItem.onclick = function(e){
         updateCategory(e.target.name);
