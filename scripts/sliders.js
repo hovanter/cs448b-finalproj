@@ -74,7 +74,7 @@ $( document ).ready(function() {
 
 	function createSliderHTML(data, data_name){
 		console.log('Creating slider HTML')
-		var sliderHTML = '<div id="slider-'+data_name+'"></div>' +
+		var sliderHTML = '<div id="slider-'+data_name+'">'+data_name+'</div>' +
 			'<div id="'+data_name+'-values">' +
 				'<span id='+data_name+'-start"></span>' +
 				'<span id='+data_name+'-end"></span>' +
@@ -91,6 +91,7 @@ $( document ).ready(function() {
 		var checkboxDiv = document.createElement('div');
 		checkboxDiv.className = "checkbox-div";
 		checkboxDiv.id = "checkbox-container-" + data_name;
+		checkboxDiv.innerText = data_name;
 		var checkboxForm = document.createElement('form');
 		checkboxForm.id = "checkbox-form-" + data_name;
 		var checkboxList = document.createElement('ul');
