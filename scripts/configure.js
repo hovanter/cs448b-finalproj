@@ -63,6 +63,7 @@
 
 var allFilters;
 function populateFilters(){
+
   allFilters = {Ordinal:[], Nominal:[], Temporal:[], Quantitative:[], 1:[],2:[],3:[]};
   console.log('populating filters');
   var tableBody = document.getElementById("data-body");
@@ -91,28 +92,38 @@ function populateFilters(){
 
   /* PLEASE UNCOMMENT */
   // // Error: User must specify 1 category for linked vis. in layout
-  // if (allFilters[2].length != 1) {
-  //    alert("You assigned " + allFilters[1].length + " category(s) to the LINKED visualization. \n\n" +
-  //       "1 category can be assigned.");
-  //   return;
-  // }
+  if (allFilters[2].length != 1 && allFilters[2].length != 2 ) {
+     alert("You assigned " + allFilters[2].length + " category(s) to the LINKED visualization. \n\n" +
+        "1 or 2 categories must be assigned.");
+    return;
+  }
   sessionStorage.filters = JSON.stringify(allFilters);
 
   var dataToTags = {};
+  var tagsToData = {};
   // For each row in the data table
   $("#data-body tr").each(function() {
-    // Get the name of that data column
+    // Get the name of that data columnb
     var dataName = this.childNodes[0].textContent;
     try {
       // Get the type tag, i.e. Ordinal, Nominal, etc.
       dataTag = this.childNodes[1].querySelector("input:checked").value;
-      // Get the interaction tag, i.e. Interactive, Static, etc.
-      interactionTag = this.childNodes[2].querySelector("input:checked").value;
+      // Get the layout tag, i.e. 1, 2, or 3.
+      layoutTag = this.childNodes[2].querySelector("input:checked").value;
       // Store it.
-      dataToTags[dataName] = [dataTag, interactionTag];
+      dataToTags[dataName] = [dataTag, layoutTag];
+      if (tagsToData[layoutTag] != undefined) {
+        tagsToData[layoutTag].push([dataName, dataTag]);
+      }
+      else {
+        tagsToData[layoutTag] = [[dataName, dataTag]];
+      }
     }
     catch (err) {}
   })
-
   sessionStorage.dataToTags = JSON.stringify(dataToTags);
+  sessionStorage.tagsToData = JSON.stringify(tagsToData);
+
+  window.location.href = "visualization.html"
+
 }

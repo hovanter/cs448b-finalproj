@@ -2,7 +2,33 @@ a.button {
 	margin-right: 4px;
 }
 
-#vis {
+.tooltip {
+	min-width: 100px;
+	min-height: 10px;
+	z-index: 3;
+	position: fixed;
+	padding: 10px;
+	background: rgba(0, 0, 0, 0.85);
+	color: #FFF;
+	border-radius: 4px;
+	transition: opacity 0.1s ease-in;
+}
+
+.hidden {
+	opacity: 0;
+}
+
+.marks {
+	cursor: pointer;
+}
+
+.marks *:hover {
+	fill: rgb(0, 200, 1) !important;
+}
+
+#vis,
+#vis-secondary {
+	margin-top: 30px;
 	overflow: scroll;
 }
 
@@ -16,15 +42,33 @@ a.button {
 }
 
 #checkboxes input {
-	margin-left: 10px;
-	margin-right: 5px;
+	margin-right: 10px;
 }
 
-.checkbox-div{
+.checkbox-div {
+	background: #FAFAFA;
 	max-height: 150px;
-	max-width: 300px;
+	max-width: 100%;
 	overflow-y: scroll;
 	overflow-x: hidden;
+	border: 1px solid #CCC;
+	border-radius: 4px;
+	padding: 10px;
+	margin-top: 30px;
+}
+
+.noUi-target {
+	margin-top: 30px;
+	margin-bottom: 10px;
+	box-shadow: none !important;
+}
+
+.noUi-handle {
+	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.05) !important;
+}
+
+.noUi-connect {
+	background: #00A9F0 !important;
 }
 
 ul{
