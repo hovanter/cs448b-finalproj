@@ -74,7 +74,8 @@ $( document ).ready(function() {
 
 	function createSliderHTML(data, data_name){
 		console.log('Creating slider HTML')
-		var sliderHTML = '<div id="slider-'+data_name+'"></div>' +
+		var sliderHTML =
+			'<div id="slider-'+data_name+'"></div>' +
 			'<div id="'+data_name+'-values">' +
 				'<span id='+data_name+'-start"></span>' +
 				'<span id='+data_name+'-end"></span>' +
