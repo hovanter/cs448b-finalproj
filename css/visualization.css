@@ -2,6 +2,30 @@ a.button {
 	margin-right: 4px;
 }
 
+.tooltip {
+	min-width: 100px;
+	min-height: 10px;
+	z-index: 3;
+	position: fixed;
+	padding: 10px;
+	background: rgba(0, 0, 0, 0.85);
+	color: #FFF;
+	border-radius: 4px;
+	transition: opacity 0.1s ease-in;
+}
+
+.hidden {
+	opacity: 0;
+}
+
+.marks {
+	cursor: pointer;
+}
+
+.marks *:hover {
+	fill: rgb(0, 200, 1) !important;
+}
+
 #vis,
 #vis-secondary {
 	margin-top: 30px;
