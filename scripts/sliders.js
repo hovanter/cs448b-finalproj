@@ -25,7 +25,13 @@ $( document ).ready(function() {
 		console.log("TEMPORAL slider")
 		name = temporalSliders[x];
 		createSliderHTML(categoryToValues[name], name);
-		createSliderTime(categoryToValues[name], name);
+		var dateOrTime = new Date(categoryToValues[name][0]);
+		if(categoryToValues[name] !== undefined){
+			createSliderDate(categoryToValues[name], name);
+		}
+		else{
+			createSliderTime(categoryToValues[name], name);
+		}
 	}
 	for(var x = 0; x< nominalForms.length; x++){
 		console.log("NOMINAL slider")
@@ -74,13 +80,15 @@ $( document ).ready(function() {
 
 	function createSliderHTML(data, data_name){
 		console.log('Creating slider HTML')
-		var sliderHTML = '<div id="slider-'+data_name+'">'+data_name+'</div>' +
+		var sliderHTML = '<div id="slider-'+data_name+'"></div>' +
 			'<div id="'+data_name+'-values">' +
+				'<span class="widget-label">'+data_name+'  </span>' +
 				'<span id='+data_name+'-start"></span>' +
 				'<span id='+data_name+'-end"></span>' +
 			'</div>' +
 			'</div>';
-			$("#sliders").append(sliderHTML);
+
+		$("#sliders").append(sliderHTML);
 		return sliderHTML;
 	}
 
@@ -91,12 +99,15 @@ $( document ).ready(function() {
 		var checkboxDiv = document.createElement('div');
 		checkboxDiv.className = "checkbox-div";
 		checkboxDiv.id = "checkbox-container-" + data_name;
-		checkboxDiv.innerText = data_name;
+		var label = document.createElement('span');
+		label.className = "widget-label";
+		label.innerText = data_name;
 		var checkboxForm = document.createElement('form');
 		checkboxForm.id = "checkbox-form-" + data_name;
 		var checkboxList = document.createElement('ul');
 
 		checkboxForm.appendChild(checkboxList);
+		checkboxDiv.appendChild(label);
 		checkboxDiv.appendChild(checkboxForm);
 		document.getElementById('checkboxes').appendChild(checkboxDiv);
 
@@ -119,26 +130,44 @@ $( document ).ready(function() {
 		}
 	}
 
+	//if min difference > 1 return 1
+	function findStepSize(data){
+		data.sort();
+		var minDifference = Math.abs(data[1] - data[0]);
+		for(var x = 0; x < data.length - 1; x++){
+			if(Math.abs(data[x] - data[x-1]) < minDifference){
+				minDifference = Math.abs(data[x] - data[x-1]);
+			}
+		}
+		if(minDifference >=1){return 1;}
+		return minDifference;
+	}
+
 	function createSliderQuantitative(data, data_name){
 		console.log('Creating Slider Quantitative')
 
 		var min = Math.min.apply(null, data);
 	  var max = Math.max.apply(null, data);
 		var slider = document.getElementById('slider-'+data_name);
+		var stepSize = findStepSize(data);
+		var decimals = 0;
+		if(stepSize <= 1){decimals = 6;}
+
 		noUiSlider.create(slider, {
 			start: [min, max],
 			connect: true,
+			step: stepSize,
 			range: {
 				'min': min,
 				'max': max
 			},
 			format: wNumb({
-				decimals: 0
+				decimals: decimals
 			})
 		});
 		var sliderValues = [
-			document.getElementById('sliders').children[slider_index].children[0],
-			document.getElementById('sliders').children[slider_index].children[1]
+			document.getElementById('sliders').children[slider_index].children[1],
+			document.getElementById('sliders').children[slider_index].children[2]
 		];
 
 		slider_index = slider_index + 2;
@@ -200,8 +229,8 @@ $( document ).ready(function() {
 			})
 		});
 		var sliderValues = [
-			document.getElementById('sliders').children[slider_index].children[0],
-			document.getElementById('sliders').children[slider_index].children[1]
+			document.getElementById('sliders').children[slider_index].children[1],
+			document.getElementById('sliders').children[slider_index].children[2]
 		];
 		slider_index = slider_index + 2;
 
@@ -225,14 +254,18 @@ $( document ).ready(function() {
 	//only will accept properly formatted javascript dates e.g mm/dd/yyyy
 	function createSliderDate(data, data_name){
 		console.log('Creating Date Slider')
+		var slider = document.getElementById('slider-'+data_name);
 
 		var date_array = [];
 		for(var x=0; x < data.length; x++){
 			date_array.push(new Date(data[x]));
 		}
-		var maxDate=new Date(Math.max.apply(null,dates));
-		var minDate=new Date(Math.min.apply(null,dates));
-		noUiSlider.create(dateSlider, {
+
+		var maxDate=new Date(Math.max.apply(null,date_array));
+		var minDate=new Date(Math.min.apply(null,date_array));
+		console.log(minDate);
+		noUiSlider.create(slider, {
+			connect: true,
 	    range: {
 	        min: minDate.getTime(),
 	        max: maxDate.getTime()
@@ -240,6 +273,26 @@ $( document ).ready(function() {
 			// Steps of one day
 	    step: 24 * 60 * 60 * 1000,
 	    start: [ minDate.getTime(), maxDate.getTime() ],
+		});
+		var sliderValues = [
+			document.getElementById('sliders').children[slider_index].children[1],
+			document.getElementById('sliders').children[slider_index].children[2]
+		];
+		slider_index = slider_index + 2;
+
+		slider.noUiSlider.on('update', function( values, handle ) {
+			if(handle === 0){
+				var dStart = new Date(0);
+				dStart.setUTCSeconds(values[handle]/1000);
+				var dStringStart = (dStart.getUTCMonth() + 1) + "/" + dStart.getUTCDate() + "/" + dStart.getUTCFullYear();
+				sliderValues[handle].textContent = "start: " + dStringStart + " ";
+			}
+			else{
+				var dEnd = new Date(0);
+				dEnd.setUTCSeconds(values[handle]/1000);
+				var dStringEnd = (dEnd.getUTCMonth() + 1) + "/" + dEnd.getUTCDate() + "/" + dEnd.getUTCFullYear();
+				sliderValues[handle].textContent = "end: " + dStringEnd + " ";
+			}
 		});
 	}
 

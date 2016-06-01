@@ -78,3 +78,7 @@ ul{
 li{
 	margin-bottom: -1rem;
 }
+
+.widget-label{
+	font-weight: bold;
+}
