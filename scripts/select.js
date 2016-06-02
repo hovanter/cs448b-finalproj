@@ -63,15 +63,6 @@ function selectDataNodeByColumnValueRange(column, range) {
 	return matches;
 }
 
-function selectAllDataNodes(){
-	matches = [];
-	console.log('heeeeeelo');
-	$("g.marks").children().each(function() {
-		matches.push(this);
-		console.log('sheet');
-	});
-	return matches;
-}
 
 /********************************************************
  ******************* DATA NODE METHODS ******************
