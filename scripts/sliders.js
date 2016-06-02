@@ -12,7 +12,6 @@ $( document ).ready(function() {
 
 	var categoryToValues = JSON.parse(sessionStorage.categoryToValues);
 
-	var allDomNodes = [];
 	var visibleCategories = new Object();
 	var visibleRanges = new Object();
 
@@ -47,6 +46,9 @@ $( document ).ready(function() {
 		createCheckBoxHTML(categoryToValues[name], name);
 	}
 
+	var allDomNodes = [];
+
+
 
 
 	function onlyUnique(value, index, self) {
@@ -55,6 +57,7 @@ $( document ).ready(function() {
 
 
 	function updateDOMNodes(){
+		allDomNodes = selectAllDataNodes();
 		for(var x = 0; x< allDomNodes.length; x++){
 			allDomNodes[x].style.visibility = 'hidden';
 		}
@@ -63,6 +66,8 @@ $( document ).ready(function() {
 			filteredLists.push(selectDataNodeByColumnValueRange(i, visibleRanges[i]));	
 		}
 		for(var j in visibleCategories){
+			console.log(j);
+			console.log(visibleCategories[j]);
 			filteredLists.push(selectDataNodeByColumnValues(j, visibleCategories[j]));	
 		}
 		var selectedIntersection = _.intersection.apply(_, filteredLists);
@@ -86,6 +91,7 @@ $( document ).ready(function() {
 				visibleCategories[data_name].push(input.value);
 			}
 		}
+		updateDOMNodes();
 	}
 
 	function createSliderHTML(data, data_name){
@@ -184,10 +190,12 @@ $( document ).ready(function() {
 			if(handle === 0){
 				sliderValues[handle].textContent = "start: " + values[handle] + " ";
 				visibleRanges[data_name][0] = values[handle];
+				updateDOMNodes();
 			}
 			else{
 				sliderValues[handle].textContent = "end: " + values[handle] + " ";
 				visibleRanges[data_name][1] = values[handle];
+				updateDOMNodes();
 			}
 		});
 	}
@@ -245,10 +253,12 @@ $( document ).ready(function() {
 			if(handle === 0){
 				sliderValues[handle].textContent = "start: " + dataToReadableTime(values[handle]) + " ";
 				visibleRanges[data_name][0] = values[handle];
+				updateDOMNodes();
 			}
 			else{
 				sliderValues[handle].textContent = "end: " + dataToReadableTime(values[handle]) + " ";
 				visibleRanges[data_name][0] = values[handle];
+				updateDOMNodes();
 			}
 		});
 	}
@@ -290,6 +300,7 @@ $( document ).ready(function() {
 				var dStringStart = (dStart.getUTCMonth() + 1) + "/" + dStart.getUTCDate() + "/" + dStart.getUTCFullYear();
 				sliderValues[handle].textContent = "start: " + dStringStart + " ";
 				visibleRanges[data_name][0] = values[handle];
+				updateDOMNodes();
 
 			}
 			else{
@@ -298,7 +309,7 @@ $( document ).ready(function() {
 				var dStringEnd = (dEnd.getUTCMonth() + 1) + "/" + dEnd.getUTCDate() + "/" + dEnd.getUTCFullYear();
 				sliderValues[handle].textContent = "end: " + dStringEnd + " ";
 				visibleRanges[data_name][0] = values[handle];
-
+				updateDOMNodes();
 			}
 		});
 	}
