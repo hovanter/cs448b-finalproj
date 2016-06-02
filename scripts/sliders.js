@@ -2,7 +2,7 @@ $( document ).ready(function() {
 
 	//may be error prone
 	var slider_index = 1;
-
+	console.log('hello');
 
 
 	var quantSliders = JSON.parse(sessionStorage.filters).Quantitative;
@@ -10,9 +10,11 @@ $( document ).ready(function() {
 	var nominalForms = JSON.parse(sessionStorage.filters).Nominal;
 	var ordinalForms = JSON.parse(sessionStorage.filters).Ordinal;
 
-
-	console.log(temporalSliders);
 	var categoryToValues = JSON.parse(sessionStorage.categoryToValues);
+
+	var allDomNodes = [];
+	var visibleCategories = new Object();
+	var visibleRanges = new Object();
 
 	var name = "";
 	for(var x = 0; x< quantSliders.length; x++){
@@ -45,41 +47,48 @@ $( document ).ready(function() {
 		createCheckBoxHTML(categoryToValues[name], name);
 	}
 
+
+
 	function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
 	}
 
-	function updateDOMNodes(allValues, toDisplay){
-		console.log(allValues);
-		console.log(toDisplay);
-		for(var x = 0; x< allValues.length; x++){
-			allValues[x].style.visibility = 'hidden';
+
+	function updateDOMNodes(){
+		for(var x = 0; x< allDomNodes.length; x++){
+			allDomNodes[x].style.visibility = 'hidden';
 		}
-		for(var x = 0; x< toDisplay.length; x++){
-			allValues[x].style.visibility = 'visible';
+		var filteredLists = []
+		for(var i in visibleRanges){
+			filteredLists.push(selectDataNodeByColumnValueRange(i, visibleRanges[i]));	
 		}
+		for(var j in visibleCategories){
+			filteredLists.push(selectDataNodeByColumnValues(j, visibleCategories[j]));	
+		}
+		var selectedIntersection = _.intersection.apply(_, filteredLists);
+		for(var k = 0; k< selectedIntersection.length; k++){
+			selectedIntersection[k].style.visibility = 'visible';
+		}
+
 	}
+
 
 	function updateCategory(data_name){
 		var checkboxCategory = document.getElementById('checkbox-form-' + data_name);
 		var listItems = checkboxCategory.children[0].children;
 		var allItems = [];
 		var toDisplay = [];
+		visibleCategories[data_name] = [];
+
 		for(var x = 0; x < listItems.length; x++){
 			var input = listItems[x].children[0];
 			if(input.checked){
-				toDisplay.push(input.value);
+				visibleCategories[data_name].push(input.value);
 			}
-			allItems.push(input.value);
 		}
-		console.log(data_name);
-		var allItemsDOM = selectDataNodeByColumnValues(data_name, allItems);
-		var toDisplayDOM = selectDataNodeByColumnValues(data_name, toDisplay);
-		updateDOMNodes(allItemsDOM, toDisplayDOM);
 	}
 
 	function createSliderHTML(data, data_name){
-		console.log('Creating slider HTML')
 		var sliderHTML = '<div id="slider-'+data_name+'"></div>' +
 			'<div id="'+data_name+'-values">' +
 				'<span class="widget-label">'+data_name+'  </span>' +
@@ -93,8 +102,6 @@ $( document ).ready(function() {
 	}
 
 	function createCheckBoxHTML(data, data_name){
-		console.log('Creating CheckBox HTML')
-		console.log(data_name);
 		data  = data.filter(onlyUnique)
 		var checkboxDiv = document.createElement('div');
 		checkboxDiv.className = "checkbox-div";
@@ -110,8 +117,10 @@ $( document ).ready(function() {
 		checkboxDiv.appendChild(label);
 		checkboxDiv.appendChild(checkboxForm);
 		document.getElementById('checkboxes').appendChild(checkboxDiv);
+		visibleCategories[data_name] = [];
 
 		for(var x=0; x<data.length;x++){
+			visibleCategories[data_name].push(data[x]);
 			var listItem = document.createElement('li');
 			var inputItem = document.createElement('input');
 			var itemDescrip = document.createElement('span');
@@ -144,7 +153,6 @@ $( document ).ready(function() {
 	}
 
 	function createSliderQuantitative(data, data_name){
-		console.log('Creating Slider Quantitative')
 
 		var min = Math.min.apply(null, data);
 	  var max = Math.max.apply(null, data);
@@ -152,7 +160,7 @@ $( document ).ready(function() {
 		var stepSize = findStepSize(data);
 		var decimals = 0;
 		if(stepSize <= 1){decimals = 6;}
-
+		visibleRanges[data_name] = [min,max];
 		noUiSlider.create(slider, {
 			start: [min, max],
 			connect: true,
@@ -175,15 +183,11 @@ $( document ).ready(function() {
 		slider.noUiSlider.on('update', function( values, handle ) {
 			if(handle === 0){
 				sliderValues[handle].textContent = "start: " + values[handle] + " ";
-				var allValues = selectDataNodeByColumnValueRange(data_name, [min, max]);
-				var toDisplay = selectDataNodeByColumnValueRange(data_name, [values[0], values[1]]);
-				updateDOMNodes(allValues, toDisplay);
+				visibleRanges[data_name][0] = values[handle];
 			}
 			else{
 				sliderValues[handle].textContent = "end: " + values[handle] + " ";
-				var allValues = selectDataNodeByColumnValueRange(data_name, [min, max]);
-				var toDisplay = selectDataNodeByColumnValueRange(data_name, [values[0], values[1]]);
-				updateDOMNodes(allValues, toDisplay);
+				visibleRanges[data_name][1] = values[handle];
 			}
 		});
 	}
@@ -210,13 +214,12 @@ $( document ).ready(function() {
 
 	//will accept of form hh:mm raging from 00:00 - 23:59
 	function createSliderTime(data, data_name){
-		console.log('Creating Time Slider')
 		var slider = document.getElementById('slider-'+data_name);
 		var transformedData = data.map(readableTimeToData);
-		console.log(transformedData)
 		var min = Math.min.apply(null, transformedData);
 	  var max = Math.max.apply(null, transformedData);
-		console.log(min, ' ', max)
+		visibleRanges[data_name] = [min,max];
+
 		noUiSlider.create(slider, {
 			start: [min, max],
 			connect: true,
@@ -237,23 +240,17 @@ $( document ).ready(function() {
 		slider.noUiSlider.on('update', function( values, handle ) {
 			if(handle === 0){
 				sliderValues[handle].textContent = "start: " + dataToReadableTime(values[handle]) + " ";
-				var allValues = selectDataNodeByColumnValueRange(data_name, [min, max]);
-				var toDisplay = selectDataNodeByColumnValueRange(data_name, [values[0], values[1]]);
-				updateDOMNodes(allValues, toDisplay);
-
+				visibleRanges[data_name][0] = values[handle];
 			}
 			else{
 				sliderValues[handle].textContent = "end: " + dataToReadableTime(values[handle]) + " ";
-				var allValues = selectDataNodeByColumnValueRange(data_name, [min, max]);
-				var toDisplay = selectDataNodeByColumnValueRange(data_name, [values[0], values[1]]);
-				updateDOMNodes(allValues, toDisplay);
+				visibleRanges[data_name][0] = values[handle];
 			}
 		});
 	}
 
 	//only will accept properly formatted javascript dates e.g mm/dd/yyyy
 	function createSliderDate(data, data_name){
-		console.log('Creating Date Slider')
 		var slider = document.getElementById('slider-'+data_name);
 
 		var date_array = [];
@@ -263,7 +260,9 @@ $( document ).ready(function() {
 
 		var maxDate=new Date(Math.max.apply(null,date_array));
 		var minDate=new Date(Math.min.apply(null,date_array));
-		console.log(minDate);
+		visibleRanges[data_name] = [minDate.getTime(),maxDate.getTime()];
+
+
 		noUiSlider.create(slider, {
 			connect: true,
 	    range: {
@@ -286,12 +285,16 @@ $( document ).ready(function() {
 				dStart.setUTCSeconds(values[handle]/1000);
 				var dStringStart = (dStart.getUTCMonth() + 1) + "/" + dStart.getUTCDate() + "/" + dStart.getUTCFullYear();
 				sliderValues[handle].textContent = "start: " + dStringStart + " ";
+				visibleRanges[data_name][0] = values[handle];
+
 			}
 			else{
 				var dEnd = new Date(0);
 				dEnd.setUTCSeconds(values[handle]/1000);
 				var dStringEnd = (dEnd.getUTCMonth() + 1) + "/" + dEnd.getUTCDate() + "/" + dEnd.getUTCFullYear();
 				sliderValues[handle].textContent = "end: " + dStringEnd + " ";
+				visibleRanges[data_name][0] = values[handle];
+
 			}
 		});
 	}
