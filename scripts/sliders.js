@@ -75,7 +75,7 @@ $( document ).ready(function() {
 		for(var x = 0; x< allDomNodes.length; x++){
 			allDomNodes[x].style.visibility = 'hidden';
 		}
-		var filteredLists = []
+		var filteredLists = [];
 		for(var i in visibleRanges){
 			if(isDate(visibleRanges[i][0])){
 				filteredLists.push(selectDataNodeByColumnValueRangeDate(i, visibleRanges[i]));	
@@ -88,12 +88,10 @@ $( document ).ready(function() {
 				filteredLists.push(selectDataNodeByColumnValueRange(i, visibleRanges[i]));	
 			}
 		}
-		for(var j in visibleCategories){
 
-			console.log(j);
-			console.log();
-			categories = visibleCategories[j];
-			filteredLists.push(selectDataNodeByColumnValues(j, categories));
+		for(var i in visibleCategories){
+			console.log(i, visibleCategories[i]);
+			filteredLists.push(selectDataNodeByColumnValues(i, visibleCategories[i]));
 		}
 		var selectedIntersection = _.intersection.apply(_, filteredLists);
 		for(var k = 0; k< selectedIntersection.length; k++){
@@ -162,7 +160,7 @@ $( document ).ready(function() {
 			inputItem.type = "checkbox";
 			inputItem.checked = true;
 			inputItem.name = data_name;
-			inputItem.value = itemName;
+			inputItem.value = data[x];
 			itemDescrip.innerHTML = itemName;
 			listItem.appendChild(inputItem);
 			listItem.appendChild(itemDescrip);
