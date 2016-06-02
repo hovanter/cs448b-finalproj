@@ -2,7 +2,27 @@
   //assume JSON of form {data: [{cat1:val1, cat2:val2}, {cat1:val1, cat2:val2}}
  $( document ).ready(function() {
 
+   function parseData() {
+     // TODO: Skip parsing the second time.
+     var options = {
+       header: true,
+       dynamicTyping: true
+     }
+     var input = sessionStorage.data.trim();
+     if (input[0] == "[") {
+       // Try as JSON
+       csvString = Papa.unparse(sessionStorage.data);
+       results = Papa.parse(csvString, options);
+     }
+     else {
+       // Try as CSV
+       results = Papa.parse(csvString, options);
+     }
+     return results.data;
+   }
+
   var userData = JSON.parse(sessionStorage.data);
+
   var datumObject = userData[0];
   var layoutHtml = '<form action="">'+
     '<input type="radio" name="layout" value="1"> 1 </input>'+
@@ -16,12 +36,14 @@
       '<input type="radio" name="data-type" value="Ordinal"> Ordinal </input>' +
       '<input type="radio" name="data-type" value="Nominal"> Nominal </input>';
 
-    // TODO: Check if the datatype is not temporal
-    var d = new Date(datumObject[key])
-    if(isNaN(d.valueOf()))
-      dataHtml += '<input type="radio" name="data-type" value="Temporal" disabled> <span style="color:#ccc">Temporal</span> </input>'
-    else
+    // If the datatype is not temporal
+    var t = datumObject[key];
+    var d = new Date(t)
+    console.log(t, t.length >= 3, t[2] == ":", isNaN( parseInt(t.substring(0,2)) ))
+    if((t[2] == ":" && !isNaN(parseInt(t.substring(0,2))) && !isNaN(parseInt(t.substring(3)))) || !isNaN(d.valueOf()))
       dataHtml += '<input type="radio" name="data-type" value="Temporal"> Temporal </input>'
+    else
+      dataHtml += '<input type="radio" name="data-type" value="Temporal" disabled> <span style="color:#ccc">Temporal</span> </input>'
 
     // If the datatype is not quantitative
     if(isNaN(datumObject[key]))
@@ -125,5 +147,4 @@ function populateFilters(){
   sessionStorage.tagsToData = JSON.stringify(tagsToData);
 
   window.location.href = "visualization.html"
-
 }
