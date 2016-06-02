@@ -7,7 +7,7 @@
 
 /* Returns the DOM nodes of all data */
 function selectAllDataNodes() {
-	matches = [];
+	var matches = [];
 	$("g.marks").children().each(function() {
 		matches.push(this);
 	});
@@ -17,7 +17,7 @@ function selectAllDataNodes() {
 /* Returns the DOM nodes of all data where the given column
  * has the given value. */
 function selectDataNodeByColumnValue(column, value) {
-	matches = [];
+	var matches = [];
 	$("g.marks").children().each(function() {
 		if (this.__data__.datum[column] == value) {
 			matches.push(this);
@@ -32,7 +32,7 @@ function selectDataNodeByColumnValue(column, value) {
  * @param values - an Array of values
  */
 function selectDataNodeByColumnValues(column, column_values) {
-	matches = [];
+	var matches = [];
 	$("g.marks").children().each(function() {
 		if (column_values.includes(this.__data__.datum[column])) {
 			matches.push(this);
@@ -53,7 +53,7 @@ function selectDataNodeByColumnValues(column, column_values) {
  *          below...
  */
 function selectDataNodeByColumnValueRange(column, range) {
-	matches = [];
+	var matches = [];
 	$("g.marks").children().each(function() {
 		if (this.__data__.datum[column] >= range[0] &&
 			this.__data__.datum[column] <= range[1]) {
@@ -71,7 +71,7 @@ function selectDataNodeByColumnValueRange(column, range) {
 /* Returns the actual DATA objects where the given column
  * has the given value. */
 function selectDataByColumnValue(column, value) {
-	matches = [];
+	var matches = [];
 	$("g.marks").children().each(function() {
 		if (this.__data__.datum[column] == value) {
 			matches.push(this.__data__.datum);
@@ -86,7 +86,7 @@ function selectDataByColumnValue(column, value) {
  * @param values - an Array of values
  */
 function selectDataByColumnValues(column, column_values) {
-	matches = [];
+	var matches = [];
 	$("g.marks").children().each(function() {
 		if (column_values.includes(this.__data__.datum[column])) {
 			matches.push(this.__data__.datum);
@@ -107,7 +107,7 @@ function selectDataByColumnValues(column, column_values) {
  *          below...
  */
 function selectDataByColumnValueRange(column, range) {
-	matches = [];
+	var matches = [];
 	$("g.marks").children().each(function() {
 		if (this.__data__.datum[column] >= range[0] &&
 			this.__data__.datum[column] <= range[1]) {

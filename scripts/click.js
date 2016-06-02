@@ -2,6 +2,7 @@ function addClickInteractions() {
 	$("g.marks").children().each(function() {
 		var child = this;
 		this.onclick = function() {
+			$(child).toggleClass("selected");
 			onClick(child.__data__)
 		}
 	});
