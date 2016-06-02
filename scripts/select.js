@@ -31,10 +31,10 @@ function selectDataNodeByColumnValue(column, value) {
  *
  * @param values - an Array of values
  */
-function selectDataNodeByColumnValues(column, values) {
+function selectDataNodeByColumnValues(column, column_values) {
 	matches = [];
 	$("g.marks").children().each(function() {
-		if (values.includes(this.__data__.datum[column])) {
+		if (column_values.includes(this.__data__.datum[column])) {
 			matches.push(this);
 		}
 	});
@@ -85,10 +85,10 @@ function selectDataByColumnValue(column, value) {
  *
  * @param values - an Array of values
  */
-function selectDataByColumnValues(column, values) {
+function selectDataByColumnValues(column, column_values) {
 	matches = [];
 	$("g.marks").children().each(function() {
-		if (values.includes(this.__data__.datum[column])) {
+		if (column_values.includes(this.__data__.datum[column])) {
 			matches.push(this.__data__.datum);
 		}
 	});
@@ -115,4 +115,8 @@ function selectDataByColumnValueRange(column, range) {
 		}
 	});
 	return matches;
+}
+
+function selectDataByColumnTimeRange(column, date1, date2) {
+	// Try to read the column as a Date object
 }

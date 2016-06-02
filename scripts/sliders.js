@@ -66,8 +66,9 @@ $( document ).ready(function() {
 		}
 		for(var j in visibleCategories){
 			console.log(j);
-			console.log(visibleCategories[j]);
-			filteredLists.push(selectDataNodeByColumnValues(j, visibleCategories[j]));
+			console.log();
+			categories = visibleCategories[j];
+			filteredLists.push(selectDataNodeByColumnValues(j, categories));
 		}
 		var selectedIntersection = _.intersection.apply(_, filteredLists);
 		for(var k = 0; k< selectedIntersection.length; k++){
