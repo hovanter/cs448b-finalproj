@@ -193,12 +193,15 @@ $( document ).ready(function() {
 	}
 
 	function readableTimeToData(time_string){
+		console.log('timestr: ' + time_string)
 		var minutes = parseInt(time_string.substring(0,2)) * 60 +
 									parseInt(time_string.substring(3))
+		console.log('min: ' + minutes)
 		return minutes
 	}
 
 	function dataToReadableTime(minutes_since_zero){
+		console.log('minutes_since_zero: ' + minutes_since_zero)
 		var hours = Math.floor(minutes_since_zero / 60);
 		var minutes = minutes_since_zero % 60;
 		var hoursString = hours.toString();
@@ -209,6 +212,7 @@ $( document ).ready(function() {
 		if (minutes < 10) {
 			minutesString = "0" + minutesString;
 		}
+		console.log('final: ' + hoursString + ":" + minutesString)
 		return hoursString + ":" + minutesString;
 	}
 
