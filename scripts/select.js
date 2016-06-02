@@ -71,12 +71,17 @@ function selectDataNodeByColumnValueRange(column, range) {
 /* Returns the actual DATA objects where the given column
  * has the given value. */
 function selectDataByColumnValue(column, value) {
+	if (results == undefined || results.data == undefined) {
+		// Data not available yet
+		return;
+	}
 	var matches = [];
-	$("g.marks").children().each(function() {
-		if (this.__data__.datum[column] == value) {
-			matches.push(this.__data__.datum);
+	for (var i = 0; i < results.data.length; i++) {
+		var datum = results.data[i];
+		if (datum[column] == value) {
+			matches.push(datum);
 		}
-	});
+	}
 	return matches;
 }
 
@@ -86,12 +91,17 @@ function selectDataByColumnValue(column, value) {
  * @param values - an Array of values
  */
 function selectDataByColumnValues(column, column_values) {
+	if (results == undefined || results.data == undefined) {
+		// Data not available yet
+		return;
+	}
 	var matches = [];
-	$("g.marks").children().each(function() {
-		if (column_values.indexOf(this.__data__.datum[column]) != -1) {
-			matches.push(this.__data__.datum);
+	for (var i = 0; i < results.data.length; i++) {
+		var datum = results.data[i];
+		if (column_values.indexOf(datum[column]) != -1) {
+			matches.push(datum);
 		}
-	});
+	}
 	return matches;
 }
 
@@ -106,16 +116,22 @@ function selectDataByColumnValues(column, column_values) {
  *          Should be obvious why from the implementation
  *          below...
  */
+/*
 function selectDataByColumnValueRange(column, range) {
+	if (results == undefined || results.data == undefined) {
+		// Data not available yet
+		return;
+	}
 	var matches = [];
-	$("g.marks").children().each(function() {
-		if (this.__data__.datum[column] >= range[0] &&
-			this.__data__.datum[column] <= range[1]) {
-			matches.push(this.__data__.datum);
+	for (var i = 0; i < results.data.length; i++) {
+		var datum = results.data[i];
+		if (datum[column] >= range[0] &&
+			datum[column] <= range[1]) {
+			matches.push(datum);
 		}
-	});
+	}
 	return matches;
-}
+}*/
 
 function selectDataByColumnTimeRange(column, date1, date2) {
 	// Try to read the column as a Date object

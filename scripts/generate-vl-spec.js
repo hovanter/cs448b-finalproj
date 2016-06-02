@@ -18,6 +18,23 @@ function parseData() {
   return results.data;
 }
 
+/* Rebinds data to the visualization(s). If the visualization(s)
+ * have not yet been created, this is a no-op. */
+function rebindData(values) {
+  if (viz1 != undefined) {
+    viz1.data("source")
+      .remove(function(d) { return true; }) // Remove all old data
+      .insert(values);
+    viz1.update();
+  }
+  if (viz2 != undefined) {
+    viz2.data("source")
+      .remove(function(d) { return true; }) // Remove all old data
+      .insert(values);
+    viz2.update();
+  }
+}
+
 /* Fetches the user tags and returns
  * (1) a "tag string" consisting of the first letters of the types of
  *     tags in the first two data columns.
@@ -179,6 +196,7 @@ $(document).ready(function() {
     // Callback receiving the View instance and parsed Vega spec
     // result.view is the View, which resides under the '#vis' element
     $(".vega-actions a").addClass("button");
+    viz1 = result.view;
     addHoverInteractions();
     addClickInteractions();
   });
@@ -193,6 +211,7 @@ $(document).ready(function() {
     // Callback receiving the View instance and parsed Vega spec
     // result.view is the View, which resides under the '#vis' element
     $(".vega-actions a").addClass("button");
+    viz2 = result.view;
     addHoverInteractions();
     addClickInteractions();
   });
