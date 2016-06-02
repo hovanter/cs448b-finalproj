@@ -21,13 +21,13 @@ function parseData() {
 /* Rebinds data to the visualization(s). If the visualization(s)
  * have not yet been created, this is a no-op. */
 function rebindData(values) {
-  if (viz1 != undefined) {
+  if (typeof(viz1) !== 'undefined') {
     viz1.data("source")
       .remove(function(d) { return true; }) // Remove all old data
       .insert(values);
     viz1.update();
   }
-  if (viz2 != undefined) {
+  if (typeof(viz2) !== 'undefined') {
     viz2.data("source")
       .remove(function(d) { return true; }) // Remove all old data
       .insert(values);

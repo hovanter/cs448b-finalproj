@@ -40,7 +40,7 @@ $( document ).ready(function() {
 		createCheckBoxHTML(categoryToValues[name], name);
 	}
 
-	function updateDOMNodes(){
+/*	function updateDOMNodes(){
 		allDomNodes = selectAllDataNodes();
 		for(var x = 0; x< allDomNodes.length; x++){
 			allDomNodes[x].style.visibility = 'hidden';
@@ -62,11 +62,32 @@ $( document ).ready(function() {
 			filteredLists.push(selectDataNodeByColumnValues(i, visibleCategories[i]));
 		}
 		var selectedIntersection = _.intersection.apply(_, filteredLists);
-		for(var k = 0; k< selectedIntersection.length; k++){
-			selectedIntersection[k].style.visibility = 'visible';
+		rebindData(selectedIntersection);
+	}*/
+
+	function updateData(){
+		var filteredLists = [];
+		for(var i in visibleRanges){
+			if(isDate(visibleRanges[i][0])){
+				filteredLists.push(selectDataByColumnValueRangeDate(i, visibleRanges[i]));	
+			}
+			else if(isTime(visibleRanges[i][0])){
+				filteredLists.push(selectDataByColumnValueRangeTime(i, visibleRanges[i]));	
+			}
+			else{
+				filteredLists.push(selectDataByColumnValueRange(i, visibleRanges[i]));	
+			}
 		}
 
+		for(var i in visibleCategories){
+			console.log(i);
+			console.log(visibleCategories[i]);
+			filteredLists.push(selectDataByColumnValues(i, visibleCategories[i]));
+		}
+		var selectedIntersection = _.intersection.apply(_, filteredLists);
+		rebindData(selectedIntersection);
 	}
+
 
 
 	function updateCategory(data_name){
@@ -82,7 +103,7 @@ $( document ).ready(function() {
 				visibleCategories[data_name].push(input.value);
 			}
 		}
-		updateDOMNodes();
+		updateData();
 	}
 
 	function createSliderHTML(data, data_name){
@@ -175,12 +196,12 @@ $( document ).ready(function() {
 			if(handle === 0){
 				sliderValues[handle].textContent = "start: " + values[handle] + " ";
 				visibleRanges[data_name][0] = values[handle];
-				updateDOMNodes();
+				updateData();
 			}
 			else{
 				sliderValues[handle].textContent = "end: " + values[handle] + " ";
 				visibleRanges[data_name][1] = values[handle];
-				updateDOMNodes();
+				updateData();
 			}
 		});
 	}
@@ -215,12 +236,12 @@ $( document ).ready(function() {
 			if(handle === 0){
 				sliderValues[handle].textContent = "start: " + dataToReadableTime(values[handle]) + " ";
 				visibleRanges[data_name][0] = dataToReadableTime(values[handle]);
-				updateDOMNodes();
+				updateData();
 			}
 			else{
 				sliderValues[handle].textContent = "end: " + dataToReadableTime(values[handle]) + " ";
 				visibleRanges[data_name][1] = dataToReadableTime(values[handle]);
-				updateDOMNodes();
+				updateData();
 			}
 		});
 	}
@@ -261,7 +282,7 @@ $( document ).ready(function() {
 				var dStringStart = (dStart.getUTCMonth() + 1) + "/" + (dStart.getUTCDate()) + "/" + dStart.getUTCFullYear();
 				sliderValues[handle].textContent = "start: " + dStringStart + " ";
 				visibleRanges[data_name][0] = dStart;
-				updateDOMNodes();
+				updateData();
 
 			}
 			else{
@@ -270,7 +291,7 @@ $( document ).ready(function() {
 				var dStringEnd = (dEnd.getUTCMonth() + 1) + "/" + (dEnd.getUTCDate() ) + "/" + dEnd.getUTCFullYear();
 				sliderValues[handle].textContent = "end: " + dStringEnd + " ";
 				visibleRanges[data_name][1] = dEnd;
-				updateDOMNodes();
+				updateData();
 			}
 		});
 	}

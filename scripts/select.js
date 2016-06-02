@@ -131,7 +131,7 @@ function selectDataNodeByColumnValueRangeTime(column, range) {
 /* Returns the actual DATA objects where the given column
  * has the given value. */
 function selectDataByColumnValue(column, value) {
-	if (results == undefined || results.data == undefined) {
+	if (results === undefined || results.data === undefined) {
 		// Data not available yet
 		return;
 	}
@@ -151,7 +151,7 @@ function selectDataByColumnValue(column, value) {
  * @param values - an Array of values
  */
 function selectDataByColumnValues(column, column_values) {
-	if (results == undefined || results.data == undefined) {
+	if (results === undefined || results.data === undefined) {
 		// Data not available yet
 		return;
 	}
@@ -162,6 +162,7 @@ function selectDataByColumnValues(column, column_values) {
 			matches.push(datum);
 		}
 	}
+	console.log(matches);
 	return matches;
 }
 
@@ -177,10 +178,12 @@ function selectDataByColumnValues(column, column_values) {
  *          below...
  */
 function selectDataByColumnValueRange(column, range) {
-	if (results == undefined || results.data == undefined) {
+	if (typeof(results) === 'undefined' || results.data === undefined) {
 		// Data not available yet
 		return;
 	}
+	console.log(column);
+	console.log(range);
 	var matches = [];
 	for (var i = 0; i < results.data.length; i++) {
 		var datum = results.data[i];
@@ -192,6 +195,36 @@ function selectDataByColumnValueRange(column, range) {
 	return matches;
 }
 
-function selectDataByColumnTimeRange(column, date1, date2) {
-	// Try to read the column as a Date object
+function selectDataByColumnValueRangeDate(column, range) {
+	if (typeof(results) === 'undefined' || results.data === undefined) {
+		// Data not available yet
+		return;
+	}
+	var matches = [];
+	for (var i = 0; i < results.data.length; i++) {
+		var datum = results.data[i];
+		var date = new Date(datum);
+		if (date >= range[0] &&
+			date <= range[1]) {
+			matches.push(datum);
+		}
+	}
+	return matches;
+}
+
+function selectDataByColumnValueRangeTime(column, range) {
+	if (typeof(results) === 'undefined' || results.data === undefined) {
+		// Data not available yet
+		return;
+	}
+	var matches = [];
+	for (var i = 0; i < results.data.length; i++) {
+		var datum = results.data[i];
+		var dataMinutes = readableTimeToData(datum);
+		if (dataMinutes >= readableTimeToData(range[0]) &&
+			dataMinutes <= readableTimeToData(range[1])) {
+			matches.push(datum);
+		}
+	}
+	return matches;	
 }
