@@ -55,6 +55,20 @@ $( document ).ready(function() {
     return self.indexOf(value) === index;
 	}
 
+	function isDate(date_string){
+		var dateOrTime = new Date(date_string);
+		if(isNaN( dateOrTime.getTime())){
+			return false;
+		}
+		return true;			
+	}
+
+	function isTime(time_string){
+		console.log(time_string);
+		var re = new RegExp("..:..");
+		return re.test(time_string);
+	}
+
 
 	function updateDOMNodes(){
 		allDomNodes = selectAllDataNodes();
@@ -63,10 +77,23 @@ $( document ).ready(function() {
 		}
 		var filteredLists = []
 		for(var i in visibleRanges){
-			filteredLists.push(selectDataNodeByColumnValueRange(i, visibleRanges[i]));
+			if(isDate(visibleRanges[i][0])){
+				filteredLists.push(selectDataNodeByColumnValueRangeDate(i, visibleRanges[i]));	
+			}
+			else if(isTime(visibleRanges[i][0])){
+				console.log(visibleRanges[i]);
+				filteredLists.push(selectDataNodeByColumnValueRangeTime(i, visibleRanges[i]));	
+			}
+			else{
+				filteredLists.push(selectDataNodeByColumnValueRange(i, visibleRanges[i]));	
+			}
 		}
 		for(var j in visibleCategories){
-			filteredLists.push(selectDataNodeByColumnValues(j, visibleCategories[j]));
+
+			console.log(j);
+			console.log();
+			categories = visibleCategories[j];
+			filteredLists.push(selectDataNodeByColumnValues(j, categories));
 		}
 		var selectedIntersection = _.intersection.apply(_, filteredLists);
 		for(var k = 0; k< selectedIntersection.length; k++){
@@ -214,7 +241,6 @@ $( document ).ready(function() {
 	}
 
 	function dataToReadableTime(minutes_since_zero){
-		console.log('minutes_since_zero: ' + minutes_since_zero)
 		var hours = Math.floor(minutes_since_zero / 60);
 		var minutes = minutes_since_zero % 60;
 		var hoursString = hours.toString();
@@ -257,12 +283,12 @@ $( document ).ready(function() {
 		slider.noUiSlider.on('update', function( values, handle ) {
 			if(handle === 0){
 				sliderValues[handle].textContent = "start: " + dataToReadableTime(values[handle]) + " ";
-				visibleRanges[data_name][0] = values[handle];
+				visibleRanges[data_name][0] = dataToReadableTime(values[handle]);
 				updateDOMNodes();
 			}
 			else{
 				sliderValues[handle].textContent = "end: " + dataToReadableTime(values[handle]) + " ";
-				visibleRanges[data_name][0] = values[handle];
+				visibleRanges[data_name][1] = dataToReadableTime(values[handle]);
 				updateDOMNodes();
 			}
 		});
@@ -304,7 +330,7 @@ $( document ).ready(function() {
 			if(handle === 0){
 				var dStart = new Date(0);
 				dStart.setUTCSeconds(values[handle]/1000);
-				var dStringStart = (dStart.getUTCMonth() + 1) + "/" + dStart.getUTCDate() + "/" + dStart.getUTCFullYear();
+				var dStringStart = (dStart.getUTCMonth() + 1) + "/" + (dStart.getUTCDate()) + "/" + dStart.getUTCFullYear();
 				sliderValues[handle].textContent = "start: " + dStringStart + " ";
 				visibleRanges[data_name][0] = dStart;
 				updateDOMNodes();
@@ -313,9 +339,9 @@ $( document ).ready(function() {
 			else{
 				var dEnd = new Date(0);
 				dEnd.setUTCSeconds(values[handle]/1000);
-				var dStringEnd = (dEnd.getUTCMonth() + 1) + "/" + dEnd.getUTCDate() + "/" + dEnd.getUTCFullYear();
+				var dStringEnd = (dEnd.getUTCMonth() + 1) + "/" + (dEnd.getUTCDate() ) + "/" + dEnd.getUTCFullYear();
 				sliderValues[handle].textContent = "end: " + dStringEnd + " ";
-				visibleRanges[data_name][0] = dEnd;
+				visibleRanges[data_name][1] = dEnd;
 				updateDOMNodes();
 			}
 		});
