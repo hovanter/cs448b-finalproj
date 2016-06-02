@@ -12,10 +12,14 @@ a.button {
 	color: #FFF;
 	border-radius: 4px;
 	transition: opacity 0.1s ease-in;
+	transition: width 0.1s ease-in;
+	transition: height 0.1s ease-in;
 }
 
 .hidden {
 	opacity: 0;
+	width: 0px;
+	height: 0px;
 }
 
 .marks {
