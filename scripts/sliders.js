@@ -9,7 +9,6 @@ $( document ).ready(function() {
 	var ordinalForms = JSON.parse(sessionStorage.filters).Ordinal;
 
 	var categoryToValues = JSON.parse(sessionStorage.categoryToValues);
-
 	var visibleCategories = new Object();
 	var visibleRanges = new Object();
 
@@ -61,12 +60,12 @@ $( document ).ready(function() {
 		}
 		var filteredLists = []
 		for(var i in visibleRanges){
-			filteredLists.push(selectDataNodeByColumnValueRange(i, visibleRanges[i]));	
+			filteredLists.push(selectDataNodeByColumnValueRange(i, visibleRanges[i]));
 		}
 		for(var j in visibleCategories){
 			console.log(j);
 			console.log(visibleCategories[j]);
-			filteredLists.push(selectDataNodeByColumnValues(j, visibleCategories[j]));	
+			filteredLists.push(selectDataNodeByColumnValues(j, visibleCategories[j]));
 		}
 		var selectedIntersection = _.intersection.apply(_, filteredLists);
 		for(var k = 0; k< selectedIntersection.length; k++){
@@ -161,14 +160,12 @@ $( document ).ready(function() {
 	}
 
 	function createSliderQuantitative(data, data_name){
-
 		console.log('Creating Slider Quantitative for ' + data_name)
 		// Replace NaN in quantititative dataset
 		for(var i=0; i < data.length; i++) {
 			if(isNaN(data[i]))
 		 		data[i] = data[i].replace(data[i], '0');
 		}
-
 		var min = Math.min.apply(null, data);
 	  var max = Math.max.apply(null, data);
 		console.log(min, ' ', max)
@@ -237,7 +234,6 @@ $( document ).ready(function() {
 	//will accept of form hh:mm raging from 00:00 - 23:59
 	function createSliderTime(data, data_name){
 		console.log('Creating Time Slider for ' + data_name)
-
 		var slider = document.getElementById('slider-'+data_name);
 		var transformedData = data.map(readableTimeToData);
 		var min = Math.min.apply(null, transformedData);
