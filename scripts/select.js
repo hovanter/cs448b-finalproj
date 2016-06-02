@@ -107,7 +107,6 @@ function readableTimeToData(time_string){
 	return minutes
 }
 
-
 function selectDataNodeByColumnValueRangeTime(column, range) {
 	var matches = [];
 	$("g.marks").children().each(function() {
@@ -127,6 +126,27 @@ function selectDataNodeByColumnValueRangeTime(column, range) {
 /********************************************************
  ******************* DATA NODE METHODS ******************
  ********************************************************/
+
+/* Returns the (visually selected) DATA objects, which
+ * gives both the column name and the column value*/
+function selectDataByActiveSelections() {
+	var matches = [];
+	$("#vis-secondary g.marks").children().each(function() {
+		if ($(this).hasClass("selected")) {
+			var data = {};
+			var keys = Object.keys(this.__data__.datum);
+			for (var i = 0; i < keys.length; i++) {
+				var key = keys[i];
+				if (key[0] != "_" && key != "count") {
+					console.log(key);
+					data[key] = this.__data__.datum[key];
+				}
+			}
+			matches.push(data);
+		}
+	});
+	return matches;
+} 
 
 /* Returns the actual DATA objects where the given column
  * has the given value. */
