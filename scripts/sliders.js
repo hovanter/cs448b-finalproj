@@ -26,11 +26,12 @@ $( document ).ready(function() {
 		name = temporalSliders[x];
 		createSliderHTML(categoryToValues[name], name);
 		var dateOrTime = new Date(categoryToValues[name][0]);
-		if(categoryToValues[name] !== undefined){
-			createSliderDate(categoryToValues[name], name);
+		console.log(dateOrTime);
+		if(isNaN( dateOrTime.getTime() )){
+			createSliderTime(categoryToValues[name], name);
 		}
 		else{
-			createSliderTime(categoryToValues[name], name);
+			createSliderDate(categoryToValues[name], name);
 		}
 	}
 	for(var x = 0; x< nominalForms.length; x++){
@@ -65,8 +66,6 @@ $( document ).ready(function() {
 			filteredLists.push(selectDataNodeByColumnValueRange(i, visibleRanges[i]));
 		}
 		for(var j in visibleCategories){
-			console.log(j);
-			console.log(visibleCategories[j]);
 			filteredLists.push(selectDataNodeByColumnValues(j, visibleCategories[j]));
 		}
 		var selectedIntersection = _.intersection.apply(_, filteredLists);
@@ -130,7 +129,6 @@ $( document ).ready(function() {
 			var listItem = document.createElement('li');
 			var inputItem = document.createElement('input');
 			var itemDescrip = document.createElement('span');
-			console.log(data)
 			if (typeof data[x] == "string") {
 				var itemName = data[x][0] + data[x].slice(1).toLowerCase();
 			}
@@ -210,10 +208,8 @@ $( document ).ready(function() {
 	}
 
 	function readableTimeToData(time_string){
-		console.log('timestr: ' + time_string)
 		var minutes = parseInt(time_string.substring(0,2)) * 60 +
 									parseInt(time_string.substring(3))
-		console.log('min: ' + minutes)
 		return minutes
 	}
 
@@ -229,7 +225,6 @@ $( document ).ready(function() {
 		if (minutes < 10) {
 			minutesString = "0" + minutesString;
 		}
-		console.log('final: ' + hoursString + ":" + minutesString)
 		return hoursString + ":" + minutesString;
 	}
 
@@ -276,7 +271,6 @@ $( document ).ready(function() {
 	//only will accept properly formatted javascript dates e.g mm/dd/yyyy
 	function createSliderDate(data, data_name){
 		var slider = document.getElementById('slider-'+data_name);
-
 		var date_array = [];
 		for(var x=0; x < data.length; x++){
 			date_array.push(new Date(data[x]));
@@ -284,7 +278,10 @@ $( document ).ready(function() {
 
 		var maxDate=new Date(Math.max.apply(null,date_array));
 		var minDate=new Date(Math.min.apply(null,date_array));
-		visibleRanges[data_name] = [minDate.getTime(),maxDate.getTime()];
+		console.log(minDate);
+		console.log(maxDate);
+		visibleRanges[data_name] = [minDate,maxDate];
+		console.log(visibleRanges);
 
 
 		noUiSlider.create(slider, {
@@ -309,7 +306,7 @@ $( document ).ready(function() {
 				dStart.setUTCSeconds(values[handle]/1000);
 				var dStringStart = (dStart.getUTCMonth() + 1) + "/" + dStart.getUTCDate() + "/" + dStart.getUTCFullYear();
 				sliderValues[handle].textContent = "start: " + dStringStart + " ";
-				visibleRanges[data_name][0] = values[handle];
+				visibleRanges[data_name][0] = dStart;
 				updateDOMNodes();
 
 			}
@@ -318,7 +315,7 @@ $( document ).ready(function() {
 				dEnd.setUTCSeconds(values[handle]/1000);
 				var dStringEnd = (dEnd.getUTCMonth() + 1) + "/" + dEnd.getUTCDate() + "/" + dEnd.getUTCFullYear();
 				sliderValues[handle].textContent = "end: " + dStringEnd + " ";
-				visibleRanges[data_name][0] = values[handle];
+				visibleRanges[data_name][0] = dEnd;
 				updateDOMNodes();
 			}
 		});
