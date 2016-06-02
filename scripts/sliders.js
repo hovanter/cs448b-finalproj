@@ -3,7 +3,7 @@ $( document ).ready(function() {
 	//may be error prone
 	var slider_index = 1;
 
-
+	console.log(sessionStorage.filters)
 
 	var quantSliders = JSON.parse(sessionStorage.filters).Quantitative;
 	var temporalSliders = JSON.parse(sessionStorage.filters).Temporal;
@@ -13,7 +13,8 @@ $( document ).ready(function() {
 
 	console.log(temporalSliders);
 	var categoryToValues = JSON.parse(sessionStorage.categoryToValues);
-
+	console.log(categoryToValues)
+	console.log(quantSliders)
 	var name = "";
 	for(var x = 0; x< quantSliders.length; x++){
 		console.log("QUANTITATIVE slider")
@@ -93,7 +94,7 @@ $( document ).ready(function() {
 	}
 
 	function createCheckBoxHTML(data, data_name){
-		console.log('Creating CheckBox HTML')
+		console.log('Creating CheckBox HTML for ' + data_name)
 		console.log(data_name);
 		data  = data.filter(onlyUnique)
 		var checkboxDiv = document.createElement('div');
@@ -115,7 +116,10 @@ $( document ).ready(function() {
 			var listItem = document.createElement('li');
 			var inputItem = document.createElement('input');
 			var itemDescrip = document.createElement('span');
-			var itemName = data[x][0] + data[x].slice(1).toLowerCase();
+			console.log(data)
+			if (typeof data[x] == "string") {
+				var itemName = data[x][0] + data[x].slice(1).toLowerCase();
+			}
 			inputItem.type = "checkbox";
 			inputItem.checked = true;
 			inputItem.name = data_name;
@@ -144,10 +148,16 @@ $( document ).ready(function() {
 	}
 
 	function createSliderQuantitative(data, data_name){
-		console.log('Creating Slider Quantitative')
-
+		console.log('Creating Slider Quantitative for ' + data_name)
+		console.log(data)
+		// Replace NaN in quantititative dataset
+		for(var i=0; i < data.length; i++) {
+			if(isNaN(data[i]))
+		 		data[i] = data[i].replace(data[i], '0');
+		}
 		var min = Math.min.apply(null, data);
 	  var max = Math.max.apply(null, data);
+		console.log(min, ' ', max)
 		var slider = document.getElementById('slider-'+data_name);
 		var stepSize = findStepSize(data);
 		var decimals = 0;
@@ -214,7 +224,7 @@ $( document ).ready(function() {
 
 	//will accept of form hh:mm raging from 00:00 - 23:59
 	function createSliderTime(data, data_name){
-		console.log('Creating Time Slider')
+		console.log('Creating Time Slider for ' + data_name)
 		var slider = document.getElementById('slider-'+data_name);
 		var transformedData = data.map(readableTimeToData);
 		console.log(transformedData)

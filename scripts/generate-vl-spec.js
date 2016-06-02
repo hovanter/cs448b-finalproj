@@ -13,13 +13,13 @@ function parseData() {
   }
   else {
     // Try as CSV
-    results = Papa.parse(csvString, options);
+    results = Papa.parse(input, options);
   }
   return results.data;
 }
 
 /* Fetches the user tags and returns
- * (1) a "tag string" consisting of the first letters of the types of 
+ * (1) a "tag string" consisting of the first letters of the types of
  *     tags in the first two data columns.
  * (2) "tag columns" indicating which coolumn each letter in the tag
  *     string actually refers to.
@@ -49,13 +49,13 @@ function getFieldInfo(section) {
   /*
   var ft = JSON.parse(sessionStorage.dataToTags);
   var keys = Object.keys(ft);
-  
+
   // Fetch first two fields.
   dt1 = ft[keys[0]]
   dt2 = ft[keys[1]]
 
   tagString = [dt1[0][0], dt2[0][0]].sort().join("");
-  tagColumns = [{"name": keys[0], "type": dt1[0]}, 
+  tagColumns = [{"name": keys[0], "type": dt1[0]},
                 {"name": keys[1], "type": dt2[0]}];
   return [tagString, tagColumns];*/
 }
@@ -102,13 +102,13 @@ function getEncoding(section) {
   if (tagColumns.length > 1) {
     return {
       "y": {
-        "field": tagColumns[0].name, 
-        "type": tagColumns[0].type, 
+        "field": tagColumns[0].name,
+        "type": tagColumns[0].type,
         "scale": {"zero": false}
       },
       "x": {
-        "field": tagColumns[1].name, 
-        "type": tagColumns[1].type, 
+        "field": tagColumns[1].name,
+        "type": tagColumns[1].type,
         "scale": {"zero": false}
       }
     }
@@ -116,13 +116,13 @@ function getEncoding(section) {
   else if (tagColumns.length > 0) {
     return {
       "y": {
-        "field": tagColumns[0].name, 
-        "type": "quantitative", 
+        "field": tagColumns[0].name,
+        "type": "quantitative",
         "aggregate": "count",
       },
       "x": {
-        "field": tagColumns[0].name, 
-        "type": tagColumns[0].type, 
+        "field": tagColumns[0].name,
+        "type": tagColumns[0].type,
       }
     }
   }
