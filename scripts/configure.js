@@ -16,12 +16,15 @@
      }
      else {
        // Try as CSV
-       results = Papa.parse(csvString, options);
+       results = Papa.parse(input, options);
      }
      return results.data;
    }
 
-  var userData = JSON.parse(sessionStorage.data);
+  //var userData = JSON.parse(sessionStorage.data);
+
+  var userData = parseData();
+  console.log(userData)
 
   var datumObject = userData[0];
   var layoutHtml = '<form action="">'+
@@ -38,8 +41,8 @@
 
     // If the datatype is not temporal
     var t = datumObject[key];
+    t = String(t);
     var d = new Date(t)
-    console.log(t, t.length >= 3, t[2] == ":", isNaN( parseInt(t.substring(0,2)) ))
     if((t[2] == ":" && !isNaN(parseInt(t.substring(0,2))) && !isNaN(parseInt(t.substring(3)))) || !isNaN(d.valueOf()))
       dataHtml += '<input type="radio" name="data-type" value="Temporal"> Temporal </input>'
     else
@@ -55,7 +58,7 @@
 
     // console.log(key, " ", )
     categoryToValue[key] = [];
-    $('#data-body').append('<tr><td>' + key + '</td><td>'+ dataHtml +'</td><td>'+ layoutHtml+'</td></tr>');
+    $('#data-body').append('<tr><td id="category">' + key + '</td><td id="example">'+datumObject[key]+'</td><td>'+ dataHtml +'</td><td>'+ layoutHtml+'</td></tr>');
   }
 
   for(var x = 0; x<userData.length; x++){
@@ -92,13 +95,18 @@ function populateFilters(){
   for (var i = 0, row; row = tableBody.rows[i]; i++) {
     var catName;
     for (var j = 0, col; col = row.cells[j]; j++) {
-      if(col.childNodes[0].nodeType === 3){
+      console.log(col)
+      if(col.childNodes[0].nodeType === 3 && j == 0){
         catName = col.childNodes[0].data; //text
+        console.log(col.childNodes[0])
       }
-      else{
+      else if (j > 1){
+        console.log(col)
         var radioGroup = col.childNodes[0].children[0].name
+        console.log(radioGroup)
         if ($('input[name=' + radioGroup + ']:checked').length > 0) {
           var radioValue = $('input[name=' + radioGroup + ']:checked').val();
+          console.log('PUSHING: ' + catName)
           allFilters[radioValue].push(catName);
         }
       }
