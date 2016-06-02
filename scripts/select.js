@@ -34,7 +34,7 @@ function selectDataNodeByColumnValue(column, value) {
 function selectDataNodeByColumnValues(column, column_values) {
 	var matches = [];
 	$("g.marks").children().each(function() {
-		if (column_values.includes(this.__data__.datum[column])) {
+		if (column_values.indexOf(this.__data__.datum[column]) != -1) {
 			matches.push(this);
 		}
 	});
@@ -88,7 +88,7 @@ function selectDataByColumnValue(column, value) {
 function selectDataByColumnValues(column, column_values) {
 	var matches = [];
 	$("g.marks").children().each(function() {
-		if (column_values.includes(this.__data__.datum[column])) {
+		if (column_values.indexOf(this.__data__.datum[column]) != -1) {
 			matches.push(this.__data__.datum);
 		}
 	});
