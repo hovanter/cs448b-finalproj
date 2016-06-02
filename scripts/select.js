@@ -176,7 +176,6 @@ function selectDataByColumnValues(column, column_values) {
  *          Should be obvious why from the implementation
  *          below...
  */
-/*
 function selectDataByColumnValueRange(column, range) {
 	if (results == undefined || results.data == undefined) {
 		// Data not available yet
@@ -191,7 +190,7 @@ function selectDataByColumnValueRange(column, range) {
 		}
 	}
 	return matches;
-}*/
+}
 
 function selectDataByColumnTimeRange(column, date1, date2) {
 	// Try to read the column as a Date object
