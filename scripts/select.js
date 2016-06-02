@@ -63,6 +63,7 @@ function selectDataNodeByColumnValueRange(column, range) {
 	return matches;
 }
 
+
 /********************************************************
  ******************* DATA NODE METHODS ******************
  ********************************************************/
