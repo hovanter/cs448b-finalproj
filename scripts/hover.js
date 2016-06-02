@@ -31,7 +31,8 @@ function onMove(event) {
 	showTooltip.tooltip.style.top = "" + (event.clientY + 20) + "px";
 }
 
-/* Writes out a datum object to a string.
+/* Writes out a datum object to a string, ignoring
+ * intrinsic properties that start with an underscore.
  */
 function datumToString(datum) {
 	var str = "";
@@ -59,7 +60,7 @@ function showTooltip(datum) {
 		document.body.appendChild(div);
 		showTooltip.tooltip = div;
 	}
-	showTooltip.tooltip.innerHTML = datumToString(datum);
+	$(showTooltip.tooltip).html(datumToString(datum));
 }
 
 /* Hides tooltip at mouse position.
