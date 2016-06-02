@@ -111,12 +111,9 @@ function readableTimeToData(time_string){
 function selectDataNodeByColumnValueRangeTime(column, range) {
 	var matches = [];
 	$("g.marks").children().each(function() {
-		console.log(this);
-
 		if (typeof this.__data__.datum[column] != "string") {
 			return;
 		}
-		
 		var dataMinutes = readableTimeToData(this.__data__.datum[column]);
 		if (dataMinutes >= readableTimeToData(range[0]) &&
 			dataMinutes <= readableTimeToData(range[1])) {

@@ -1,14 +1,13 @@
 $( document ).ready(function() {
 
-	//may be error prone
+	//slider_index is global used for creation to know which child to refer to
 	var slider_index = 1;
-
-
+	var allDomNodes = [];
+	/********* divy up data types to appropriate UI widgets $ *******/
 	var quantSliders = JSON.parse(sessionStorage.filters).Quantitative;
 	var temporalSliders = JSON.parse(sessionStorage.filters).Temporal;
 	var nominalForms = JSON.parse(sessionStorage.filters).Nominal;
 	var ordinalForms = JSON.parse(sessionStorage.filters).Ordinal;
-
 	var categoryToValues = JSON.parse(sessionStorage.categoryToValues);
 
 	var visibleCategories = new Object();
@@ -16,17 +15,14 @@ $( document ).ready(function() {
 
 	var name = "";
 	for(var x = 0; x< quantSliders.length; x++){
-		console.log("QUANTITATIVE slider")
 		name = quantSliders[x];
 		createSliderHTML(categoryToValues[name], name);
 		createSliderQuantitative(categoryToValues[name], name);
 	}
 	for(var x = 0; x< temporalSliders.length; x++){
-		console.log("TEMPORAL slider")
 		name = temporalSliders[x];
 		createSliderHTML(categoryToValues[name], name);
 		var dateOrTime = new Date(categoryToValues[name][0]);
-		console.log(dateOrTime);
 		if(isNaN( dateOrTime.getTime() )){
 			createSliderTime(categoryToValues[name], name);
 		}
@@ -35,40 +31,14 @@ $( document ).ready(function() {
 		}
 	}
 	for(var x = 0; x< nominalForms.length; x++){
-		console.log("NOMINAL slider")
 		name = nominalForms[x];
 		createCheckBoxHTML(categoryToValues[name], name);
 	}
 
 	for(var x = 0; x< ordinalForms.length; x++){
-		console.log("ORDINAL slider")
 		name = ordinalForms[x];
 		createCheckBoxHTML(categoryToValues[name], name);
 	}
-
-	var allDomNodes = [];
-
-
-
-
-	function onlyUnique(value, index, self) {
-    return self.indexOf(value) === index;
-	}
-
-	function isDate(date_string){
-		var dateOrTime = new Date(date_string);
-		if(isNaN( dateOrTime.getTime())){
-			return false;
-		}
-		return true;			
-	}
-
-	function isTime(time_string){
-		console.log(time_string);
-		var re = new RegExp("..:..");
-		return re.test(time_string);
-	}
-
 
 	function updateDOMNodes(){
 		allDomNodes = selectAllDataNodes();
@@ -81,7 +51,6 @@ $( document ).ready(function() {
 				filteredLists.push(selectDataNodeByColumnValueRangeDate(i, visibleRanges[i]));	
 			}
 			else if(isTime(visibleRanges[i][0])){
-				console.log(visibleRanges[i]);
 				filteredLists.push(selectDataNodeByColumnValueRangeTime(i, visibleRanges[i]));	
 			}
 			else{
@@ -90,7 +59,6 @@ $( document ).ready(function() {
 		}
 
 		for(var i in visibleCategories){
-			console.log(i, visibleCategories[i]);
 			filteredLists.push(selectDataNodeByColumnValues(i, visibleCategories[i]));
 		}
 		var selectedIntersection = _.intersection.apply(_, filteredLists);
@@ -171,21 +139,7 @@ $( document ).ready(function() {
 		}
 	}
 
-	//if min difference > 1 return 1
-	function findStepSize(data){
-		data.sort();
-		var minDifference = Math.abs(data[1] - data[0]);
-		for(var x = 0; x < data.length - 1; x++){
-			if(Math.abs(data[x] - data[x-1]) < minDifference){
-				minDifference = Math.abs(data[x] - data[x-1]);
-			}
-		}
-		if(minDifference >=1){return 1;}
-		return minDifference;
-	}
-
 	function createSliderQuantitative(data, data_name){
-		console.log('Creating Slider Quantitative for ' + data_name)
 		// Replace NaN in quantititative dataset
 		for(var i=0; i < data.length; i++) {
 			if(isNaN(data[i]))
@@ -193,7 +147,6 @@ $( document ).ready(function() {
 		}
 		var min = Math.min.apply(null, data);
 	  var max = Math.max.apply(null, data);
-		console.log(min, ' ', max)
 		var slider = document.getElementById('slider-'+data_name);
 		var stepSize = findStepSize(data);
 		var decimals = 0;
@@ -230,26 +183,6 @@ $( document ).ready(function() {
 				updateDOMNodes();
 			}
 		});
-	}
-
-	function readableTimeToData(time_string){
-		var minutes = parseInt(time_string.substring(0,2)) * 60 +
-									parseInt(time_string.substring(3))
-		return minutes
-	}
-
-	function dataToReadableTime(minutes_since_zero){
-		var hours = Math.floor(minutes_since_zero / 60);
-		var minutes = minutes_since_zero % 60;
-		var hoursString = hours.toString();
-		var minutesString = minutes.toString();
-		if(hours < 10){
-			hoursString = "0" + hoursString;
-		}
-		if (minutes < 10) {
-			minutesString = "0" + minutesString;
-		}
-		return hoursString + ":" + minutesString;
 	}
 
 	//will accept of form hh:mm raging from 00:00 - 23:59
@@ -302,10 +235,7 @@ $( document ).ready(function() {
 
 		var maxDate=new Date(Math.max.apply(null,date_array));
 		var minDate=new Date(Math.min.apply(null,date_array));
-		console.log(minDate);
-		console.log(maxDate);
 		visibleRanges[data_name] = [minDate,maxDate];
-		console.log(visibleRanges);
 
 
 		noUiSlider.create(slider, {
@@ -344,7 +274,4 @@ $( document ).ready(function() {
 			}
 		});
 	}
-
-
-
 });

@@ -24,41 +24,44 @@
   //var userData = JSON.parse(sessionStorage.data);
 
   var userData = parseData();
-  console.log(userData)
-
   var datumObject = userData[0];
-  var layoutHtml = '<form action="">'+
-    '<input type="radio" name="layout" value="1"> 1 </input>'+
-    '<input type="radio" name="layout" value="2"> 2 </input>'+
-    '<input type="radio" name="layout" value="3"> 3 </input>'+
-    '</form>';
+
 
   var categoryToValue = {};
+  var j = 0;
   for(var key in datumObject){
+    var layoutHtml = '<form action="">'+
+    '<input type="radio" name="layout'+j+'" value="1"> 1 </input>'+
+    '<input type="radio" name="layout'+j+'" value="2"> 2 </input>'+
+    '<input type="radio" name="layout'+j+'" value="3"> 3 </input>'+
+    '</form>';
+
+
     var dataHtml = '<form action="">'+
-      '<input type="radio" name="data-type" value="Ordinal"> Ordinal </input>' +
-      '<input type="radio" name="data-type" value="Nominal"> Nominal </input>';
+      '<input type="radio" name="data-type'+j+'" value="Ordinal"> Ordinal </input>' +
+      '<input type="radio" name="data-type'+j+'" value="Nominal"> Nominal </input>';
 
     // If the datatype is not temporal
     var t = datumObject[key];
     t = String(t);
     var d = new Date(t)
     if((t[2] == ":" && !isNaN(parseInt(t.substring(0,2))) && !isNaN(parseInt(t.substring(3)))) || !isNaN(d.valueOf()))
-      dataHtml += '<input type="radio" name="data-type" value="Temporal"> Temporal </input>'
+      dataHtml += '<input type="radio" name="data-type'+j+'" value="Temporal"> Temporal </input>'
     else
-      dataHtml += '<input type="radio" name="data-type" value="Temporal" disabled> <span style="color:#ccc">Temporal</span> </input>'
+      dataHtml += '<input type="radio" name="data-type'+j+'" value="Temporal" disabled> <span style="color:#ccc">Temporal</span> </input>'
 
     // If the datatype is not quantitative
     if(isNaN(datumObject[key]))
-      dataHtml += '<input type="radio" name="data-type" value="Quantitative" disabled> <span style="color:#ccc">Quantitative</span> </input>';
+      dataHtml += '<input type="radio" name="data-type'+j+'" value="Quantitative" disabled> <span style="color:#ccc">Quantitative</span> </input>';
     else
-      dataHtml += '<input type="radio" name="data-type" value="Quantitative"> Quantitative </input>';
+      dataHtml += '<input type="radio" name="data-type'+j+'" value="Quantitative"> Quantitative </input>';
 
     dataHtml += '</form>';
 
     // console.log(key, " ", )
     categoryToValue[key] = [];
     $('#data-body').append('<tr><td id="category">' + key + '</td><td id="example">'+datumObject[key]+'</td><td>'+ dataHtml +'</td><td>'+ layoutHtml+'</td></tr>');
+    j = j + 1;
   }
 
   for(var x = 0; x<userData.length; x++){
@@ -68,22 +71,6 @@
   }
 
   sessionStorage.categoryToValues = JSON.stringify(categoryToValue);
-
-  (function newNames(){
-    var tableBody = document.getElementById("data-body");
-    for (var i = 0, row; row = tableBody.rows[i]; i++) {
-      for (var j = 0, col; col = row.cells[j]; j++) {
-        if(col.childNodes[0].nodeType === 3){
-          continue;
-        }
-        else{
-          for(var k = 0; k < col.childNodes[0].children.length; k++){
-            col.childNodes[0].children[k].name = col.childNodes[0].children[k].name + i.toString();
-          }
-        }
-      }
-    }
-  })();
 });
 
 var allFilters;
@@ -98,21 +85,16 @@ function populateFilters(){
       console.log(col)
       if(col.childNodes[0].nodeType === 3 && j == 0){
         catName = col.childNodes[0].data; //text
-        console.log(col.childNodes[0])
       }
       else if (j > 1){
-        console.log(col)
         var radioGroup = col.childNodes[0].children[0].name
-        console.log(radioGroup)
         if ($('input[name=' + radioGroup + ']:checked').length > 0) {
           var radioValue = $('input[name=' + radioGroup + ']:checked').val();
-          console.log('PUSHING: ' + catName)
           allFilters[radioValue].push(catName);
         }
       }
     }
   }
-  console.log(allFilters)
   // Error: User must specify 2 categories for primary vis. in layout
   if (allFilters[1].length != 2) {
     alert("You assigned " + allFilters[1].length + " category(s) to PRIMARY visualization. \n\n" +
