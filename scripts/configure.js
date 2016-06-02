@@ -137,9 +137,9 @@ function populateFilters(){
     var dataName = this.childNodes[0].textContent;
     try {
       // Get the type tag, i.e. Ordinal, Nominal, etc.
-      dataTag = this.childNodes[1].querySelector("input:checked").value;
+      dataTag = this.childNodes[2].querySelector("input:checked").value;
       // Get the layout tag, i.e. 1, 2, or 3.
-      layoutTag = this.childNodes[2].querySelector("input:checked").value;
+      layoutTag = this.childNodes[3].querySelector("input:checked").value;
       // Store it.
       dataToTags[dataName] = [dataTag, layoutTag];
       if (tagsToData[layoutTag] != undefined) {
