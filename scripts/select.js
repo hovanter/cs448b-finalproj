@@ -5,6 +5,15 @@
  ******************* DOM NODE METHODS ******************
  *******************************************************/
 
+/* Returns the DOM nodes of all data */
+function selectAllDataNodes() {
+	matches = [];
+	$("g.marks").children().each(function() {
+		matches.push(this);
+	});
+	return matches;
+}
+
 /* Returns the DOM nodes of all data where the given column
  * has the given value. */
 function selectDataNodeByColumnValue(column, value) {
