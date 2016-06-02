@@ -22,12 +22,16 @@ a.button {
 	height: 0px;
 }
 
+.selected {
+	fill: rgb(0, 200, 1) !important;
+}
+
 .marks {
 	cursor: pointer;
 }
 
-.marks *:hover {
-	fill: rgb(0, 200, 1) !important;
+.marks :not(.selected):hover {
+	fill: rgb(0, 200, 255) !important;
 }
 
 #vis,

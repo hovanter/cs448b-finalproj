@@ -100,7 +100,7 @@ function getEncoding(section) {
   }
   var tagColumns = fieldInfo[1];
   if (tagColumns.length > 1) {
-    return {
+    var encoding = {
       "y": {
         "field": tagColumns[0].name,
         "type": tagColumns[0].type,
@@ -112,6 +112,16 @@ function getEncoding(section) {
         "scale": {"zero": false}
       }
     }
+
+    var tagString = fieldInfo[0];
+    if (tagString == "OO" || tagString == "NN") {
+      encoding["size"] = {
+        "aggregate": "count",
+        "field": "*", "type":
+        "quantitative"
+      };
+    }
+    return encoding;
   }
   else if (tagColumns.length > 0) {
     return {
