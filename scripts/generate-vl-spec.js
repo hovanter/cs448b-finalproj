@@ -33,6 +33,8 @@ function rebindData(values) {
       .insert(values);
     viz2.update();
   }
+  addHoverInteractions();
+  addClickInteractions();
 }
 
 /* Fetches the user tags and returns
