@@ -40,31 +40,6 @@ $( document ).ready(function() {
 		createCheckBoxHTML(categoryToValues[name], name);
 	}
 
-/*	function updateDOMNodes(){
-		allDomNodes = selectAllDataNodes();
-		for(var x = 0; x< allDomNodes.length; x++){
-			allDomNodes[x].style.visibility = 'hidden';
-		}
-		var filteredLists = [];
-		for(var i in visibleRanges){
-			if(isDate(visibleRanges[i][0])){
-				filteredLists.push(selectDataNodeByColumnValueRangeDate(i, visibleRanges[i]));	
-			}
-			else if(isTime(visibleRanges[i][0])){
-				filteredLists.push(selectDataNodeByColumnValueRangeTime(i, visibleRanges[i]));	
-			}
-			else{
-				filteredLists.push(selectDataNodeByColumnValueRange(i, visibleRanges[i]));	
-			}
-		}
-
-		for(var i in visibleCategories){
-			filteredLists.push(selectDataNodeByColumnValues(i, visibleCategories[i]));
-		}
-		var selectedIntersection = _.intersection.apply(_, filteredLists);
-		rebindData(selectedIntersection);
-	}*/
-
 	function updateData(){
 		var filteredLists = [];
 		for(var i in visibleRanges){
@@ -86,6 +61,7 @@ $( document ).ready(function() {
 		}
 		var selectedIntersection = _.intersection.apply(_, filteredLists);
 		rebindData(selectedIntersection);
+		updateDOMNodes();
 	}
 
 
