@@ -202,8 +202,6 @@ function selectDataByColumnValueRange(column, range) {
 		// Data not available yet
 		return;
 	}
-	console.log(column);
-	console.log(range);
 	var matches = [];
 	for (var i = 0; i < results.data.length; i++) {
 		var datum = results.data[i];
@@ -223,7 +221,7 @@ function selectDataByColumnValueRangeDate(column, range) {
 	var matches = [];
 	for (var i = 0; i < results.data.length; i++) {
 		var datum = results.data[i];
-		var date = new Date(datum);
+		var date = new Date(datum[column]);
 		if (date >= range[0] &&
 			date <= range[1]) {
 			matches.push(datum);
@@ -240,7 +238,7 @@ function selectDataByColumnValueRangeTime(column, range) {
 	var matches = [];
 	for (var i = 0; i < results.data.length; i++) {
 		var datum = results.data[i];
-		var dataMinutes = readableTimeToData(datum);
+		var dataMinutes = readableTimeToData(datum[column]);
 		if (dataMinutes >= readableTimeToData(range[0]) &&
 			dataMinutes <= readableTimeToData(range[1])) {
 			matches.push(datum);

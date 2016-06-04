@@ -18,51 +18,6 @@ function parseData() {
   return results.data;
 }
 
-function fixTimeColumn(column, unit) {
-  if (typeof results.data == "undefined") {
-    // Abort because data not available yet
-    return;
-  }
-  /*
-  for (var row in results.data) {
-    var datum = results.data[row];
-    if (unit == "date") {
-      Date d = new Date(results.data[row][column]);
-      results.data[row][column] = 
-    }
-    else if (unit == "hoursminutes") {
-      results.data[row][column] = 
-    }
-  }*/
-}
-
-/* Returns the proper time unit for a given time data column. 
- * Additionally triggers a fixup of column in the data
- * if we verify that the column indeed corresponds to a Date
- * or a hh:mm time. We just convert the column in question
- * from a string to the appropriate date format for
- * Vega-Lite.
- */
-function getTimeUnit(column) {
-  if (typeof results.data == "undefined") {
-    // Abort because data not available yet
-    return null;
-  }
-  var datum = results.data[0];
-  var time = datum[column.name];
-  if (!isNaN(Date.parse(time))) {
-    // Try as date string, succeeded
-    return "yearmonthdate";
-  }
-  var minutes = parseInt(time.substring(0,2)) * 60 +
-                parseInt(time.substring(3));
-  if (!isNaN(minutes)) {
-    // Try as hh:mm, succeeded
-    return "hoursminutes";
-  }
-  return null;
-}
-
 /* Rebinds data to the visualization(s). If the visualization(s)
  * have not yet been created, this is a no-op. */
 function rebindData(values) {
@@ -182,20 +137,6 @@ function getEncoding(section) {
         "field": "*", "type":
         "quantitative"
       };
-    }
-    else if (tagString == "NT" || tagString == "OT" ||
-             tagString == "QT" || tagString == "TT") {
-      // Time plot --> Add proper time unit(s)
-      tu1 =  getTimeUnit(tagColumns[1]);
-      if (tu1 != null) {
-        encoding["x"]["timeUnit"] = tu1;
-      }
-      if (tagString == "TT") {
-        tu2 = getTimeUnit(tagColumns[0]);
-        if (tu2 != null) {
-          encoding["y"]["timeUnit"] = tu2;
-        }
-      }
     }
 
     return encoding;

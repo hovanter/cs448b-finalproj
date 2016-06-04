@@ -23,11 +23,11 @@ a.button {
 }
 
 .selected {
-	fill: rgb(0, 200, 1) !important;
+	fill: rgba(255, 0, 0, 0.8) !important;
 }
 
-path.selected {
-	stroke: rgb(0, 200, 1) !important;
+.mark-line path.selected {
+	stroke: rgba(255, 0, 0, 0.8) !important;
 	fill: none !important;
 }
 
@@ -39,7 +39,7 @@ path.selected {
 	fill: rgb(0, 200, 255) !important;
 }
 
-.marks path:not(.selected):hover {
+.mark-line path:not(.selected):hover {
 	stroke: rgb(0, 200, 255) !important;
 	fill: none !important;
 }
