@@ -18,6 +18,51 @@ function parseData() {
   return results.data;
 }
 
+function fixTimeColumn(column, unit) {
+  if (typeof results.data == "undefined") {
+    // Abort because data not available yet
+    return;
+  }
+  /*
+  for (var row in results.data) {
+    var datum = results.data[row];
+    if (unit == "date") {
+      Date d = new Date(results.data[row][column]);
+      results.data[row][column] = 
+    }
+    else if (unit == "hoursminutes") {
+      results.data[row][column] = 
+    }
+  }*/
+}
+
+/* Returns the proper time unit for a given time data column. 
+ * Additionally triggers a fixup of column in the data
+ * if we verify that the column indeed corresponds to a Date
+ * or a hh:mm time. We just convert the column in question
+ * from a string to the appropriate date format for
+ * Vega-Lite.
+ */
+function getTimeUnit(column) {
+  if (typeof results.data == "undefined") {
+    // Abort because data not available yet
+    return null;
+  }
+  var datum = results.data[0];
+  var time = datum[column.name];
+  if (!isNaN(Date.parse(time))) {
+    // Try as date string, succeeded
+    return "yearmonthdate";
+  }
+  var minutes = parseInt(time.substring(0,2)) * 60 +
+                parseInt(time.substring(3));
+  if (!isNaN(minutes)) {
+    // Try as hh:mm, succeeded
+    return "hoursminutes";
+  }
+  return null;
+}
+
 /* Rebinds data to the visualization(s). If the visualization(s)
  * have not yet been created, this is a no-op. */
 function rebindData(values) {
@@ -63,20 +108,16 @@ function getFieldInfo(section) {
       "type": dataType
     });
   }
-  return [firstLetters.sort().join(""), columns];
+  if (firstLetters.length > 0 && firstLetters[1] < firstLetters[0]) {
+    var ltmp = firstLetters[0];
+    firstLetters[0] = firstLetters[1];
+    firstLetters[1] = ltmp;
 
-  /*
-  var ft = JSON.parse(sessionStorage.dataToTags);
-  var keys = Object.keys(ft);
-
-  // Fetch first two fields.
-  dt1 = ft[keys[0]]
-  dt2 = ft[keys[1]]
-
-  tagString = [dt1[0][0], dt2[0][0]].sort().join("");
-  tagColumns = [{"name": keys[0], "type": dt1[0]},
-                {"name": keys[1], "type": dt2[0]}];
-  return [tagString, tagColumns];*/
+    var ctmp = columns[0];
+    columns[0] = columns[1];
+    columns[1] = ctmp;
+  }
+  return [firstLetters.join(""), columns];
 }
 
 /* Returns the appropriate mark for given the user's data tags and
@@ -132,14 +173,31 @@ function getEncoding(section) {
       }
     }
 
+    // Extra tweaks for specific tag strings
     var tagString = fieldInfo[0];
     if (tagString == "OO" || tagString == "NN") {
+      // Matrix plot --> Add aggregate count as a third dimension
       encoding["size"] = {
         "aggregate": "count",
         "field": "*", "type":
         "quantitative"
       };
     }
+    else if (tagString == "NT" || tagString == "OT" ||
+             tagString == "QT" || tagString == "TT") {
+      // Time plot --> Add proper time unit(s)
+      tu1 =  getTimeUnit(tagColumns[1]);
+      if (tu1 != null) {
+        encoding["x"]["timeUnit"] = tu1;
+      }
+      if (tagString == "TT") {
+        tu2 = getTimeUnit(tagColumns[0]);
+        if (tu2 != null) {
+          encoding["y"]["timeUnit"] = tu2;
+        }
+      }
+    }
+
     return encoding;
   }
   else if (tagColumns.length > 0) {

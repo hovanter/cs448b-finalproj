@@ -101,12 +101,6 @@ function selectDataNodeByColumnValueRangeDate(column, range) {
  *          below...MAKE SURE YOU ACTUALLY USING TIME 
  *					SPECIFICATION DESCRIBED ABOVE
  */
-function readableTimeToData(time_string){
-	var minutes = parseInt(time_string.substring(0,2)) * 60 +
-								parseInt(time_string.substring(3));
-	return minutes
-}
-
 function selectDataNodeByColumnValueRangeTime(column, range) {
 	var matches = [];
 	$("g.marks").children().each(function() {
@@ -120,6 +114,12 @@ function selectDataNodeByColumnValueRangeTime(column, range) {
 		}
 	});
 	return matches;
+}
+
+function readableTimeToData(time_string){
+	var minutes = parseInt(time_string.substring(0,2)) * 60 +
+								parseInt(time_string.substring(3));
+	return minutes
 }
 
 
