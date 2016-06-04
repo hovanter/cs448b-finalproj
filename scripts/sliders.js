@@ -60,6 +60,7 @@ $( document ).ready(function() {
 			filteredLists.push(selectDataByColumnValues(i, visibleCategories[i]));
 		}
 		var selectedIntersection = _.intersection.apply(_, filteredLists);
+		console.log(selectedIntersection);
 		rebindData(selectedIntersection);
 		updateDOMNodes();
 	}

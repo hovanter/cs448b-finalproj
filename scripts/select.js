@@ -182,7 +182,6 @@ function selectDataByColumnValues(column, column_values) {
 			matches.push(datum);
 		}
 	}
-	console.log(matches);
 	return matches;
 }
 
@@ -227,6 +226,7 @@ function selectDataByColumnValueRangeDate(column, range) {
 			matches.push(datum);
 		}
 	}
+	console.log(matches);
 	return matches;
 }
 
