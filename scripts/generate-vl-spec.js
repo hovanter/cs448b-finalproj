@@ -129,6 +129,9 @@ function getMark(section) {
     return null;
   }
   var tagString = fieldInfo[0];
+  if (tagString.length == 1) {
+    return "bar"; // bar chart
+  }
   if (tagString.length == 2) {
     return {
       "NO": "circle", // scatter plot
@@ -142,9 +145,6 @@ function getMark(section) {
       "QT": "line",   // line plot
       "TT": "circle", // scatter plot
     }[tagString];
-  }
-  else if (tagString.length == 1) {
-    return "bar"; // bar chart
   }
   else {
     return null;

@@ -26,12 +26,22 @@ a.button {
 	fill: rgb(0, 200, 1) !important;
 }
 
+path.selected {
+	stroke: rgb(0, 200, 1) !important;
+	fill: none !important;
+}
+
 .marks {
 	cursor: pointer;
 }
 
 .marks :not(.selected):hover {
 	fill: rgb(0, 200, 255) !important;
+}
+
+.marks path:not(.selected):hover {
+	stroke: rgb(0, 200, 255) !important;
+	fill: none !important;
 }
 
 #vis,
