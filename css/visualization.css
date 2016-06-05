@@ -89,6 +89,10 @@ a.button {
 	background: #00A9F0 !important;
 }
 
+.vega-actions {
+	display: none;
+}
+
 ul{
 	list-style-type: none;
 }

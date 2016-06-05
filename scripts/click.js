@@ -2,7 +2,6 @@
 function updateDOMNodes(){
 	var allDomNodes = selectAllDataNodes();
 	var selectedData = selectDataByActiveSelections();
-	console.log(selectedData);
 	var category = "";
 	var values = [];
 	var selectedNodes = [];
@@ -40,15 +39,7 @@ function addClickInteractions() {
 		var child = this;
 		this.onclick = function() {
 			$(child).toggleClass("selected");
-			onClick(child.__data__)
 			updateDOMNodes();
 		}
 	});
-}
-
-/* Called when the mouse clicks over a particular item. 
- * This can be a jumping off point for fancier Javascript
- * click interactions. (Linked visualizations?)
- */
-function onClick(datum) {
 }

@@ -55,17 +55,12 @@ $( document ).ready(function() {
 		}
 
 		for(var i in visibleCategories){
-			console.log(i);
-			console.log(visibleCategories[i]);
 			filteredLists.push(selectDataByColumnValues(i, visibleCategories[i]));
 		}
 		var selectedIntersection = _.intersection.apply(_, filteredLists);
-		console.log(selectedIntersection);
 		rebindData(selectedIntersection);
 		updateDOMNodes();
 	}
-
-
 
 	function updateCategory(data_name){
 		var checkboxCategory = document.getElementById('checkbox-form-' + data_name);

@@ -19,7 +19,6 @@
 
 #layout-template {
   background: url('../assets/layout-template.png') no-repeat;
-  height: 420px;
-  width: 500px;
+  min-height: 420px;
   background-size: contain;
 }

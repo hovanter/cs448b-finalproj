@@ -13,9 +13,27 @@
 <body>
   <div class="container">
     <!-- Instruction section -->
+    <br />
+    <h3>2. Tell us a little about your data:</h3>
+    
+    <h5>Layout guide</h5>
     <div class="row">
-      <br />
-      <h3>2. Tell us a little about your data:</h3>
+      <div class="six columns">
+        <p>We break our visualization down into three main sections/components.</p>
+        <ul>
+          <li>A <b>primary visualization</b>, where the main data columns that you want to visualize are plotted against each other.</li>
+          <li>A <b>linked visualization</b>, where up to two additional data columns can be plotted against each other.</li>
+          <li>A <b>filters panel</b>, where any data columns that you want to use as filters will be shown.</li>
+        </ul>
+        <p>Please assign your data columns that you want to visualize to one of the three sections according to the layout guide on the right.</p>
+      </div>
+      <div class="six columns">
+        <div id="layout-template"></div>
+      </div>
+    </div>
+
+    <h5>Data types</h5>
+    <div class="row">
       <p>Please tag your column data types. This will help us find the best way to visualize your data.</p>
       <table class="u-full-width">
         <thead>
@@ -39,23 +57,15 @@
           </tr>
           <tr>
             <td><i>Quantitative</i></td>
-            <td>A quantitative measure represents a numerical value.</td>
+            <td>A quantitative measure represents a numerical value, usually on a continuous scale.</td>
           </tr>
         </tbody>
       </table>
-      <h5>Layout template</h5>
-      <p>We break our visualization down into three main sections/components.</p>
-      <ul>
-        <li>A <b>primary visualization</b>, where the main data columns that you want to visualize are plotted against each other.</li>
-        <li>A <b>linked visualization</b>, where up to two additional data columns can be plotted against each other.</li>
-        <li>A <b>filters panel</b>, where any data columns that you want to use as filters will be shown.</li>
-      </ul>
-      <p>Please assign your data columns that you want to visualize to one of the three sections according to the template below.</p>
-      <div id="layout-template"></div>
     </div>
 
     <!-- Main content section -->
-    <h5>Your data columns:</h5>
+    <br />
+    <h5>Your data columns</h5>
     <div class="row">
       <table class="u-full-width">
         <thead>

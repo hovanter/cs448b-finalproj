@@ -138,7 +138,6 @@ function selectDataByActiveSelections() {
 			for (var i = 0; i < keys.length; i++) {
 				var key = keys[i];
 				if (key[0] != "_" && key != "count") {
-					console.log(key);
 					data[key] = this.__data__.datum[key];
 				}
 			}
