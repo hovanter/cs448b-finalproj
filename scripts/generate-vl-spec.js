@@ -18,20 +18,45 @@ function parseData() {
   return results.data;
 }
 
+/* Fixes time data so it rebinds properly. */
+function fixTimeData(viz) {
+  var dataToTags = JSON.parse(sessionStorage.dataToTags);
+  var keys = Object.keys(dataToTags);
+  for (var j in keys) {
+    var dataName = keys[j];
+    var dataType = dataToTags[dataName][0];
+    if (dataType == "Temporal") {
+      viz.data("source").update(
+        function(d) { return true; },
+        dataName,
+        function(d) {
+          if (typeof d[dataName] == "string") {
+            return Date.parse(d[dataName]);
+          }
+          return d[dataName];
+        }
+      )
+    }
+  }
+  viz.update();
+}
+
 /* Rebinds data to the visualization(s). If the visualization(s)
  * have not yet been created, this is a no-op. */
-function rebindData(values) {
+function rebindData(newValues) {
   if (typeof(viz1) !== 'undefined') {
     viz1.data("source")
       .remove(function(d) { return true; }) // Remove all old data
-      .insert(values);
+      .insert(newValues);
     viz1.update();
+    fixTimeData(viz1);
   }
   if (typeof(viz2) !== 'undefined') {
     viz2.data("source")
       .remove(function(d) { return true; }) // Remove all old data
-      .insert(values);
+      .insert(newValues);
     viz2.update();
+    fixTimeData(viz2);
   }
   addHoverInteractions();
   addClickInteractions();
@@ -63,20 +88,16 @@ function getFieldInfo(section) {
       "type": dataType
     });
   }
-  return [firstLetters.sort().join(""), columns];
+  if (firstLetters.length > 0 && firstLetters[1] < firstLetters[0]) {
+    var ltmp = firstLetters[0];
+    firstLetters[0] = firstLetters[1];
+    firstLetters[1] = ltmp;
 
-  /*
-  var ft = JSON.parse(sessionStorage.dataToTags);
-  var keys = Object.keys(ft);
-
-  // Fetch first two fields.
-  dt1 = ft[keys[0]]
-  dt2 = ft[keys[1]]
-
-  tagString = [dt1[0][0], dt2[0][0]].sort().join("");
-  tagColumns = [{"name": keys[0], "type": dt1[0]},
-                {"name": keys[1], "type": dt2[0]}];
-  return [tagString, tagColumns];*/
+    var ctmp = columns[0];
+    columns[0] = columns[1];
+    columns[1] = ctmp;
+  }
+  return [firstLetters.join(""), columns];
 }
 
 /* Returns the appropriate mark for given the user's data tags and
@@ -88,6 +109,9 @@ function getMark(section) {
     return null;
   }
   var tagString = fieldInfo[0];
+  if (tagString.length == 1) {
+    return "bar"; // bar chart
+  }
   if (tagString.length == 2) {
     return {
       "NO": "circle", // scatter plot
@@ -101,9 +125,6 @@ function getMark(section) {
       "QT": "line",   // line plot
       "TT": "circle", // scatter plot
     }[tagString];
-  }
-  else if (tagString.length == 1) {
-    return "bar"; // bar chart
   }
   else {
     return null;
@@ -132,14 +153,17 @@ function getEncoding(section) {
       }
     }
 
+    // Extra tweaks for specific tag strings
     var tagString = fieldInfo[0];
     if (tagString == "OO" || tagString == "NN") {
+      // Matrix plot --> Add aggregate count as a third dimension
       encoding["size"] = {
         "aggregate": "count",
         "field": "*", "type":
         "quantitative"
       };
     }
+
     return encoding;
   }
   else if (tagColumns.length > 0) {

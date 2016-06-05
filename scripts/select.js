@@ -101,12 +101,6 @@ function selectDataNodeByColumnValueRangeDate(column, range) {
  *          below...MAKE SURE YOU ACTUALLY USING TIME 
  *					SPECIFICATION DESCRIBED ABOVE
  */
-function readableTimeToData(time_string){
-	var minutes = parseInt(time_string.substring(0,2)) * 60 +
-								parseInt(time_string.substring(3));
-	return minutes
-}
-
 function selectDataNodeByColumnValueRangeTime(column, range) {
 	var matches = [];
 	$("g.marks").children().each(function() {
@@ -120,6 +114,12 @@ function selectDataNodeByColumnValueRangeTime(column, range) {
 		}
 	});
 	return matches;
+}
+
+function readableTimeToData(time_string){
+	var minutes = parseInt(time_string.substring(0,2)) * 60 +
+								parseInt(time_string.substring(3));
+	return minutes
 }
 
 
@@ -182,7 +182,6 @@ function selectDataByColumnValues(column, column_values) {
 			matches.push(datum);
 		}
 	}
-	console.log(matches);
 	return matches;
 }
 
@@ -202,8 +201,6 @@ function selectDataByColumnValueRange(column, range) {
 		// Data not available yet
 		return;
 	}
-	console.log(column);
-	console.log(range);
 	var matches = [];
 	for (var i = 0; i < results.data.length; i++) {
 		var datum = results.data[i];
@@ -223,12 +220,14 @@ function selectDataByColumnValueRangeDate(column, range) {
 	var matches = [];
 	for (var i = 0; i < results.data.length; i++) {
 		var datum = results.data[i];
-		var date = new Date(datum);
+		var date = new Date(datum[column]);
 		if (date >= range[0] &&
 			date <= range[1]) {
 			matches.push(datum);
 		}
 	}
+	console.log("Matches: ");
+	console.log(matches);
 	return matches;
 }
 
@@ -240,7 +239,7 @@ function selectDataByColumnValueRangeTime(column, range) {
 	var matches = [];
 	for (var i = 0; i < results.data.length; i++) {
 		var datum = results.data[i];
-		var dataMinutes = readableTimeToData(datum);
+		var dataMinutes = readableTimeToData(datum[column]);
 		if (dataMinutes >= readableTimeToData(range[0]) &&
 			dataMinutes <= readableTimeToData(range[1])) {
 			matches.push(datum);

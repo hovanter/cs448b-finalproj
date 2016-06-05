@@ -60,6 +60,7 @@ $( document ).ready(function() {
 			filteredLists.push(selectDataByColumnValues(i, visibleCategories[i]));
 		}
 		var selectedIntersection = _.intersection.apply(_, filteredLists);
+		console.log(selectedIntersection);
 		rebindData(selectedIntersection);
 		updateDOMNodes();
 	}
@@ -119,9 +120,7 @@ $( document ).ready(function() {
 			var listItem = document.createElement('li');
 			var inputItem = document.createElement('input');
 			var itemDescrip = document.createElement('span');
-			if (typeof data[x] == "string") {
-				var itemName = data[x][0] + data[x].slice(1).toLowerCase();
-			}
+			itemName = data[x];
 			inputItem.type = "checkbox";
 			inputItem.checked = true;
 			inputItem.name = data_name;

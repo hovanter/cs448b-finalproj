@@ -31,30 +31,30 @@
   var j = 0;
   for(var key in datumObject){
     var layoutHtml = '<form action="">'+
-    '<input type="radio" name="layout'+j+'" value="1"> 1 </input>'+
-    '<input type="radio" name="layout'+j+'" value="2"> 2 </input>'+
-    '<input type="radio" name="layout'+j+'" value="3"> 3 </input>'+
+    '<input type="radio" name="layout'+j+'" value="1"> 1 </input><br />'+
+    '<input type="radio" name="layout'+j+'" value="2"> 2 </input><br />'+
+    '<input type="radio" name="layout'+j+'" value="3"> 3 </input><br />'+
     '</form>';
 
 
     var dataHtml = '<form action="">'+
-      '<input type="radio" name="data-type'+j+'" value="Ordinal"> Ordinal </input>' +
-      '<input type="radio" name="data-type'+j+'" value="Nominal"> Nominal </input>';
+      '<input type="radio" name="data-type'+j+'" value="Ordinal"> Ordinal </input><br />' +
+      '<input type="radio" name="data-type'+j+'" value="Nominal"> Nominal </input><br />';
 
     // If the datatype is not temporal
     var t = datumObject[key];
     t = String(t);
     var d = new Date(t)
     if((t[2] == ":" && !isNaN(parseInt(t.substring(0,2))) && !isNaN(parseInt(t.substring(3)))) || !isNaN(d.valueOf()))
-      dataHtml += '<input type="radio" name="data-type'+j+'" value="Temporal"> Temporal </input>'
+      dataHtml += '<input type="radio" name="data-type'+j+'" value="Temporal"> Temporal </input><br />'
     else
-      dataHtml += '<input type="radio" name="data-type'+j+'" value="Temporal" disabled> <span style="color:#ccc">Temporal</span> </input>'
+      dataHtml += '<input type="radio" name="data-type'+j+'" value="Temporal" disabled> <span style="color:#ccc">Temporal</span> </input><br />'
 
     // If the datatype is not quantitative
     if(isNaN(datumObject[key]))
-      dataHtml += '<input type="radio" name="data-type'+j+'" value="Quantitative" disabled> <span style="color:#ccc">Quantitative</span> </input>';
+      dataHtml += '<input type="radio" name="data-type'+j+'" value="Quantitative" disabled> <span style="color:#ccc">Quantitative</span> </input><br />';
     else
-      dataHtml += '<input type="radio" name="data-type'+j+'" value="Quantitative"> Quantitative </input>';
+      dataHtml += '<input type="radio" name="data-type'+j+'" value="Quantitative"> Quantitative </input><br />';
 
     dataHtml += '</form>';
 

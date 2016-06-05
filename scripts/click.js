@@ -51,6 +51,4 @@ function addClickInteractions() {
  * click interactions. (Linked visualizations?)
  */
 function onClick(datum) {
-	console.log("Click!");
-	console.log(datum);
 }
