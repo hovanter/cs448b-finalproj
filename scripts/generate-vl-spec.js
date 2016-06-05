@@ -18,20 +18,45 @@ function parseData() {
   return results.data;
 }
 
+/* Fixes time data so it rebinds properly. */
+function fixTimeData(viz) {
+  var dataToTags = JSON.parse(sessionStorage.dataToTags);
+  var keys = Object.keys(dataToTags);
+  for (var j in keys) {
+    var dataName = keys[j];
+    var dataType = dataToTags[dataName][0];
+    if (dataType == "Temporal") {
+      viz.data("source").update(
+        function(d) { return true; },
+        dataName,
+        function(d) {
+          if (typeof d[dataName] == "string") {
+            return Date.parse(d[dataName]);
+          }
+          return d[dataName];
+        }
+      )
+    }
+  }
+  viz.update();
+}
+
 /* Rebinds data to the visualization(s). If the visualization(s)
  * have not yet been created, this is a no-op. */
-function rebindData(values) {
+function rebindData(newValues) {
   if (typeof(viz1) !== 'undefined') {
     viz1.data("source")
       .remove(function(d) { return true; }) // Remove all old data
-      .insert(values);
+      .insert(newValues);
     viz1.update();
+    fixTimeData(viz1);
   }
   if (typeof(viz2) !== 'undefined') {
     viz2.data("source")
       .remove(function(d) { return true; }) // Remove all old data
-      .insert(values);
+      .insert(newValues);
     viz2.update();
+    fixTimeData(viz2);
   }
   addHoverInteractions();
   addClickInteractions();
