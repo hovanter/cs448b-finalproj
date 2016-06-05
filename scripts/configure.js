@@ -103,10 +103,10 @@ function populateFilters(){
   }
 
   /* PLEASE UNCOMMENT */
-  // // Error: User must specify 1 category for linked vis. in layout
-  if (allFilters[2].length != 1 && allFilters[2].length != 2 ) {
+  // Error: User must specify 1 category for linked vis. in layout
+  if (allFilters[2].length > 2 ) {
      alert("You assigned " + allFilters[2].length + " category(s) to the LINKED visualization. \n\n" +
-        "1 or 2 categories must be assigned.");
+        "At most 2 categories must be assigned.");
     return;
   }
   sessionStorage.filters = JSON.stringify(allFilters);
