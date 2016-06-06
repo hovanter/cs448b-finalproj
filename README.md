@@ -3,4 +3,6 @@ Blitz is a web-based system for building interactive data visualizations. Blitz 
 
 ![alt tag](https://github.com/hovanter/cs448b-finalproj/blob/master/screenshot.png)
 
+You can try out Blitz online using [RawGit](https://cdn.rawgit.com/hovanter/cs448b-finalproj/master/index.html)! Sample data sets can be found under the csv and json folders.
+
 Blitz is built on top of Vega-Lite and D3. Final project for CS448B.
