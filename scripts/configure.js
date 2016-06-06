@@ -97,16 +97,16 @@ function populateFilters(){
   }
   // Error: User must specify 2 categories for primary vis. in layout
   if (allFilters[1].length != 2) {
-    alert("You assigned " + allFilters[1].length + " category(s) to PRIMARY visualization. \n\n" +
-          "2 categories can be assigned.");
+    alert("You assigned " + allFilters[1].length + " data column(s) to PRIMARY visualization. \n\n" +
+          "2 categories should be assigned.");
     return;
   }
 
   /* PLEASE UNCOMMENT */
   // Error: User must specify 1 category for linked vis. in layout
   if (allFilters[2].length > 2 ) {
-     alert("You assigned " + allFilters[2].length + " category(s) to the LINKED visualization. \n\n" +
-        "At most 2 categories must be assigned.");
+     alert("You assigned " + allFilters[2].length + " data column(s) to the LINKED visualization. \n\n" +
+        "At most 2 categories should be assigned.");
     return;
   }
   sessionStorage.filters = JSON.stringify(allFilters);
